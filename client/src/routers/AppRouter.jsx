@@ -1,12 +1,14 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import LandingPage from '../components/LandingPage/LandingPage'
+import LandingPage from '../components/LandingPage/Landingpage'
 import LoginPage from '../components/LogIn/LoginPage'
 import Form from '../components/LogIn/MyForm'
 import PageNotFound from '../components/PageNotFound'
+import Navbar from '../components/Navbar/Navbar'
 
 const AppRouter = () => (
 	<Router>
+		<Navbar />
 		<Switch>
 			<Route path='/' component={LandingPage} exact={true} />
 			<Route path='/login' component={LoginPage} exact={true} />
