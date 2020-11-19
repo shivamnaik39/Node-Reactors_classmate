@@ -52,8 +52,8 @@ function Landingpage() {
     return (
         <Grid container className={classes.landingpage} alignItems="center" >
             <Grid container direction="column" item sm={6}>
-                <Typography component="inherit" variant="inherit" className={classes.welcomemesssage}>
-                    Welcome to classmate
+                <Typography className={classes.welcomemesssage}>
+                    Welcome to Class - Mate
                 </Typography>
                 <Typography className={classes.tagline}>
                     The new way to organize your study 
