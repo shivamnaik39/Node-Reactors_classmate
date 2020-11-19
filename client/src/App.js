@@ -1,13 +1,10 @@
-import './App.css';
-import Landingpage from './components/Landingpage/Landingpage';
-import Navbar from "./components/Navbar/Navbar"
+import React from "react";
+import AppRouter from "./routers/AppRouter"
 function App() {
-  return (
-    <div className="App">
-      <Navbar />
-      <Landingpage />      
-    </div>
-  );
+	return (
+		<div>
+			<AppRouter />
+		</div>
+	);
 }
-
 export default App;

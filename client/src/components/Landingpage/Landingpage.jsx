@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     },
     landingpage: {
         minHeight: "calc(100vh - 50px)",
+        textAlign: "center",
         [theme.breakpoints.down("xs")]: {
             display: "flex",
             flexDirection: "column-reverse",
