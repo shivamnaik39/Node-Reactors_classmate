@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Home from '../components/Home/Home'
-import LandingPage from '../components/LandingPage/Landingpage'
+import LandingPage from '../components/Landingpage/Landingpage'
 import LoginPage from '../components/LogIn/LoginPage'
 import Form from '../components/LogIn/MyForm'
 import PageNotFound from '../components/PageNotFound'
@@ -13,8 +12,16 @@ const AppRouter = () => (
 		<Navbar />
 		<Switch>
 			<Route path='/' component={LandingPage} exact={true} />
-			<Route path='/login' component={LoginPage} exact={true} />
-			<Route path="/home" component={Home} exact={true} />
+			<Route
+				path='/login'
+				render={(props) => <LoginPage {...props} signUp={false} />}
+				exact={true}
+			/>
+			<Route
+				path='/signup'
+				render={(props) => <LoginPage {...props} signUp={true} />}
+				exact={true}
+			/>
 			<Route
 				path='/student/login'
 				render={(props) => <Form {...props} signUp={false} company={false} />}

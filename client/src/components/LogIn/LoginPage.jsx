@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) =>
 	})
 )
 
-const LoginPage = (props) => {
+const LoginPage = ({ signUp }) => {
 	const classes = useStyles()
 	return (
 		// Login Page
@@ -65,7 +65,7 @@ const LoginPage = (props) => {
 			{/* title */}
 			<Grid container item direction='row' justify='flex-start'>
 				<Typography variant='h2' component='h1' className={classes.title}>
-					Login
+					{signUp ? 'Sign Up' : 'Login'}
 				</Typography>
 				<div></div>
 			</Grid>
@@ -80,17 +80,22 @@ const LoginPage = (props) => {
 						We are the market–leading technical interview platform to identify
 						and hire students with the right skills.
 					</Typography>
-					<Link to='/company/login'>
+					<Link
+						to={`/company/${signUp ? 'signup' : 'login'}`}
+						style={{ textDecoration: 'none' }}
+					>
 						<Button variant='contained' color='primary' className={classes.btn}>
-							Login
+							{signUp ? 'Sign Up' : 'Login'}
 						</Button>
 					</Link>
-					<Typography variant='h6' component='h3' className={classes.text}>
-						Don't have an account?{' '}
-						<Link to='/company/signup' className={classes.signup}>
-							Sign up
-						</Link>
-					</Typography>
+					{!signUp && (
+						<Typography variant='h6' component='h3' className={classes.text}>
+							Don't have an account?{' '}
+							<Link to='/company/signup' className={classes.signup}>
+								Sign up
+							</Link>
+						</Typography>
+					)}
 				</Grid>
 				{/* For Students */}
 				<Grid item sm={5} md={4} className={classes.card}>
@@ -101,17 +106,22 @@ const LoginPage = (props) => {
 						Join over many students, organize your classwork, analyze your
 						performance and get hired.
 					</Typography>
-					<Link to='/student/login'>
+					<Link
+						to={`/student/${signUp ? 'signup' : 'login'}`}
+						style={{ textDecoration: 'none' }}
+					>
 						<Button variant='contained' color='primary' className={classes.btn}>
-							Login
+							{signUp ? 'Sign Up' : 'Login'}
 						</Button>
 					</Link>
-					<Typography variant='h6' component='h3' className={classes.text}>
-						Don't have an account?{' '}
-						<Link to='/student/signup' className={classes.signup}>
-							Sign up
-						</Link>
-					</Typography>
+					{!signUp && (
+						<Typography variant='h6' component='h3' className={classes.text}>
+							Don't have an account?{' '}
+							<Link to='/student/signup' className={classes.signup}>
+								Sign up
+							</Link>
+						</Typography>
+					)}
 				</Grid>
 			</Grid>
 		</Grid>
