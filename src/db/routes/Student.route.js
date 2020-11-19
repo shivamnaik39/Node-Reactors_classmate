@@ -75,8 +75,9 @@ router.route('/add').post((req,res)=>{
     })
     
 })
-router.post('/login',(req,res)=>{
-
+router.post('/login', (req, res) => {
+    console.log(req.body.email)
+    console.log(req.body.password)
     User.findOne({email:req.body.email},(err,user)=>{
          
         if(err){

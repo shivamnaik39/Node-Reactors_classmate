@@ -10,6 +10,7 @@ import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import axios from "axios"
 const useStyles = makeStyles((theme) =>
 	createStyles({
 		root: {
@@ -77,7 +78,14 @@ const LoginForm = ({ signUp, company }) => {
 		setTimeout(() => {
 			setSubmitting(false)
 			if (!company) {
-				alert(JSON.stringify(values, null, 2))
+				console.log(values);
+				axios.post("http://localhost:5000/student/login", values)
+					.then(res => {
+					console.log("successfully authenticated");
+					}).catch(err => {
+						console.log("Error here in validating user");
+						console.log(err);
+				})
 			} else {
 				values.company = true
 				alert(JSON.stringify(values, null, 2))

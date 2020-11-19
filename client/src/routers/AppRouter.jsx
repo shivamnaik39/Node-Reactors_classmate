@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import LandingPage from '../components/Landingpage/Landingpage'
+import LandingPage from '../components/LandingPage/Landingpage'
 import LoginPage from '../components/LogIn/LoginPage'
 import Form from '../components/LogIn/MyForm'
 import PageNotFound from '../components/PageNotFound'
