@@ -164,7 +164,10 @@ const LoginForm = ({ signUp, company }) => {
 							<div className={classes.signup}>
 								<Typography>
 									Don't have an account?{' '}
-									<Link to='/signup' className={classes.signupLink}>
+									<Link
+										to={`/${company ? 'company' : 'student'}/signup`}
+										className={classes.signupLink}
+									>
 										Create account
 									</Link>
 								</Typography>
