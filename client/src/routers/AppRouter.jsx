@@ -5,6 +5,8 @@ import LoginPage from '../components/LogIn/LoginPage'
 import Form from '../components/LogIn/MyForm'
 import PageNotFound from '../components/PageNotFound'
 import Navbar from '../components/Navbar/Navbar'
+import StudentSignup from '../components/signUp/StudentSignup'
+import CompanySignup from '../components/signUp/CompanySignup'
 
 
 const AppRouter = () => (
@@ -22,24 +24,16 @@ const AppRouter = () => (
 				render={(props) => <LoginPage {...props} signUp={true} />}
 				exact={true}
 			/>
+			<Route path='/student/signup' component={StudentSignup} exact={true} />
+			<Route path='/company/signup' component={CompanySignup} exact={true} />
 			<Route
 				path='/student/login'
 				render={(props) => <Form {...props} signUp={false} company={false} />}
 				exact={true}
 			/>
 			<Route
-				path='/student/signup'
-				render={(props) => <Form {...props} signUp={true} company={false} />}
-				exact={true}
-			/>
-			<Route
 				path='/company/login'
 				render={(props) => <Form {...props} signUp={false} company={true} />}
-				exact={true}
-			/>
-			<Route
-				path='/company/signup'
-				render={(props) => <Form {...props} signUp={true} company={true} />}
 				exact={true}
 			/>
 			<Route component={PageNotFound} />

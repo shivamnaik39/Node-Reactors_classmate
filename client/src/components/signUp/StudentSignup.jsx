@@ -9,8 +9,6 @@ import {
 import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui'
 import React from 'react'
-import { Link } from 'react-router-dom'
-import axios from "axios"
 const useStyles = makeStyles((theme) =>
 	createStyles({
 		root: {
@@ -39,6 +37,9 @@ const useStyles = makeStyles((theme) =>
 			flexDirection: 'column',
 			justifyContent: 'center',
 			alignItems: 'center',
+			[theme.breakpoints.up('sm')]: {
+				width: '400px',
+			},
 		},
 		fieldInput: {
 			background: '#f4f4f4',
@@ -77,31 +78,32 @@ const useStyles = makeStyles((theme) =>
 	})
 )
 
-const LoginForm = ({ signUp, company }) => {
+const StudentSignup = ({ signUp, company }) => {
 	const classes = useStyles()
-	const initialValues = { email: '', password: '' }
+	const initialValues = {
+		firstName: '',
+		lastName: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
+	}
 
 	const submit = (values, { setSubmitting }) => {
 		setTimeout(() => {
 			setSubmitting(false)
-			if (!company) {
-				console.log(values);
-				axios.post("http://localhost:5000/student/login", values)
-					.then(res => {
-					console.log("successfully authenticated");
-					}).catch(err => {
-						console.log("Error here in validating user");
-						console.log(err);
-				})
-			} else {
-				values.company = true
-				alert(JSON.stringify(values, null, 2))
-			}
+
+			alert(JSON.stringify(values, null, 2))
 		}, 500)
 	}
 
 	const validate = (values) => {
 		const errors = {}
+		if (!values.firstName) {
+			errors.firstName = 'Required'
+		}
+		if (!values.lastName) {
+			errors.lastName = 'Required'
+		}
 		if (!values.email) {
 			errors.email = 'Required'
 		} else if (
@@ -113,6 +115,11 @@ const LoginForm = ({ signUp, company }) => {
 			errors.password = 'Required'
 		} else if (values.password.length < 8) {
 			errors.password = 'Password must be atleast 8 characters long!'
+		}
+		if (!values.confirmPassword) {
+			errors.confirmPassword = 'Required'
+		} else if (values.password !== values.confirmPassword) {
+			errors.confirmPassword = 'Passwords must match!'
 		}
 		return errors
 	}
@@ -138,6 +145,30 @@ const LoginForm = ({ signUp, company }) => {
 							<Field
 								className={classes.field}
 								component={TextField}
+								name='firstName'
+								type='text'
+								label='First Name'
+								variant='outlined'
+								InputProps={{
+									className: classes.fieldInput,
+								}}
+							/>
+							<br />
+							<Field
+								className={classes.field}
+								component={TextField}
+								name='lastName'
+								type='text'
+								label='Last Name'
+								variant='outlined'
+								InputProps={{
+									className: classes.fieldInput,
+								}}
+							/>
+							<br />
+							<Field
+								className={classes.field}
+								component={TextField}
 								name='email'
 								type='email'
 								label='Email Id'
@@ -158,6 +189,18 @@ const LoginForm = ({ signUp, company }) => {
 									className: classes.fieldInput,
 								}}
 							/>
+							<br />
+							<Field
+								className={classes.field}
+								component={TextField}
+								type='password'
+								label='Confirm Password'
+								name='confirmPassword'
+								variant='outlined'
+								InputProps={{
+									className: classes.fieldInput,
+								}}
+							/>
 							{isSubmitting && <LinearProgress />}
 						</div>
 
@@ -169,25 +212,13 @@ const LoginForm = ({ signUp, company }) => {
 								disabled={isSubmitting}
 								onClick={submitForm}
 								color='primary'
+								size='large'
 							>
-								{signUp ? 'Sign Up' : 'Log In'}
+								Sign Up
 							</Button>
 						</div>
 						<br />
 						<br />
-						{!signUp && (
-							<div className={classes.signup}>
-								<Typography>
-									Don't have an account?{' '}
-									<Link
-										to={`/${company ? 'company' : 'student'}/signup`}
-										className={classes.signupLink}
-									>
-										Create account
-									</Link>
-								</Typography>
-							</div>
-						)}
 					</Form>
 				)}
 			</Formik>
@@ -195,4 +226,4 @@ const LoginForm = ({ signUp, company }) => {
 	)
 }
 
-export default LoginForm
+export default StudentSignup
