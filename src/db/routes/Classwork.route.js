@@ -25,21 +25,25 @@ var upload = multer({
     storage: storage,
     
 });
-//check
+//Works
 router.post('/addStudent/:id',(req,res)=>{
     const studentid=req.params.id
-    const syllabus=url+'/Notes/'+req.file.filename
+    const syllabus=' '
     const subject=[{
         Sname: ' ',
         grade:[{marks:0}],
         faculty:' ',
-        notes:[{link:' '}]
+        notes:[{link:' ',title:' '}],
+        extnotes:[{link:' ',title:' '}],
+        assid:[{ids:' '}]
+
     }]
     const assign=[{
         Aname: ' ',
         dueDate:Date(),
-        statuse:true,
-        content:' '
+        statuse:1,
+        content:' ',
+        grades:0
     }]
     
     const Examination=Date()
@@ -69,41 +73,41 @@ router.post('/addStudent/:id',(req,res)=>{
                 });
         })
 })
-//check
-router.post('/addSyllabus/:id',upload.single('syllabus'),(req,res)=>{
-    const studentid=req.params.id
-    const url=req.protocol+'://'+req.get('host')
-    const syllabus=url+'/Notes/'+req.file.filename 
-    User.findOneAndUpdate({studentid:req.params.id},(err,user)=>{
-        user.syllabus=syllabus
-        user.save()
-        .then(response=>res.status(200).send({response}))
-        .catch(err=>res.status(500).send({err}))
-    })
-       
-    
-
-
-})
 //work
+router.post('/addSyllabus/:id',upload.single('syllabus'),(req,res)=>{
+    console.log(req.body)
+    const url=req.protocol+'://'+req.get('host')
+    
+    User.findOne({studentid:req.params.id})
+    .then(user=>{
+        user.syllabus=url+'/Notes/'+req.file.filename 
+        user.save()
+        .then(result=>res.status(200).send({result}))
+        .catch(err =>res.status(400).json('Error:'+err))
+    })
+    .catch(err=>res.status(500).send({err}))
+})
+//Check
 router.put('/addAssign/:id',(req,res)=>{
+    console.log(req.body)
     User.findOneAndUpdate({studentid:req.params.id},{$push:{"assign":{
         "Aname":req.body.aname,
         "dueDate":Date(req.body.date),
-        "statuse":false,
+        "statuse":-1,
         "content":' ',
-        "priority":req.body.priority,
         "grades":0
     }
 }
+    
 
 })
 .then(result=>{
-    const sub=result.assign
-    res.status(200).send({sub})
+    console.log(result)
+    res.status(200).send('Assignment Added successfully')
 })
 .catch(err =>{
-    res.status(500).send({err})
+    console.log(err)
+    res.status(500).send(err)
 })
 })
 //works
@@ -113,25 +117,30 @@ router.put('/addSubject/:id',(req, res)=>{
         "Sname":req.body.sname,
         "faculty":req.body.faculty,
         "grade":[{marks:0}],
-        "notes":[{link:' '}]
+        "notes":[{link:' '}],
+        "extnotes":[{link:' '}],
+        "assid":[{ids:' '}]
     }
 }
     })
 
 .then(result=>{
     const sub=result.subject
-    res.status(200).send({sub})
+    res.status(200).send("Subject added")
 })
 .catch(err =>{
     res.status(500).send({err})
 })
     
 })
-//work
+//works
 router.get('/GetAssignment/:id',(req,res)=>{
     User.findOne({studentid:req.params.id},(err,user)=>{
         if(err){
             res.status(500).send(err)
+        }
+        if(user.assign==null){
+            res.status(404).send('Not Found')
         }
         else{
             const Assgn=user.assign
@@ -154,6 +163,7 @@ router.get('/GetNotes/:id',(req,res)=>{
                     return res.status(200).send({Notes})
                 }
             }
+            return res.status(404).send('Not Found')
             
         }
     })
@@ -168,6 +178,10 @@ router.get('/GetSub/:id', (req, res) => {
         }
         else {
             console.log(user)
+        if(user.subject==null){
+            res.status(404).send('No subject provided')
+        }
+        else{
             const Subject=user.subject
             res.status(200).send({Subject})
         }
@@ -175,17 +189,34 @@ router.get('/GetSub/:id', (req, res) => {
 })
 //works
 router.put('/addNotes/:id',upload.single('content'),(req,res)=>{
-    console.log(req.body.subid)
+    console.log(req.body)
     const url=req.protocol+'://'+req.get('host')
     const content=url+'/Notes/'+req.file.filename
     User.findOneAndUpdate({'subject._id':req.body.subid},{$push:{
-        "subject.$[outer].notes":{"link":content}
+        "subject.$[outer].notes":{"link":content,"title":req.body.title}
     }},
     { "arrayFilters":[{"outer._id": req.body.subid}]}
 )
 .then(result=>{
     const sub=result.subject.notes
-    res.status(200).send({sub})
+    res.status(200).send('Notes Added successfully')
+})
+.catch(err =>{
+    res.status(500).send(err)
+})
+    
+})
+//works
+router.put('/addLink/:id',(req,res)=>{
+    console.log(req.body.subid)
+    User.findOneAndUpdate({'subject._id':req.body.subid},{$push:{
+        "subject.$[outer].extnotes":{"link":req.body.link,"title":req.body.title}
+    }},
+    { "arrayFilters":[{"outer._id": req.body.subid}]}
+)
+.then(result=>{
+    const sub=result.subject.notes
+    res.status(200).send('Link Added successfully')
 })
 .catch(err =>{
     res.status(500).send(err)
@@ -212,25 +243,28 @@ router.put('/addGrades/:id',(req,res)=>{
 //check
 router.put('/addAssStatus/:id',(req,res)=>{
     
-    User.updateOne({'assign._id':req.params.id},{$set:{'assign':{
-        "statuse":false
-    }}})
+    User.update({'assign._id':req.body.aid},{$set:{
+        "assign.$[outer].statuse":0,
+        }},{ "arrayFilters":[{"outer._id": req.body.aid}]})
     .then(result=>{
         const sub=result.assign
-        res.status(200).send({sub})
+        res.status(200).send('GOOD  Going Boss')
     })
     .catch(err =>{
+        console.log(err)
         res.status(500).send(err)
     }) 
     })
 //check
 router.put('/updateAssStatus/:id',(req,res)=>{
-    User.updateOne({studentid:req.params.id},{$set:{'assign':{
-        "statuse":true
-    }}})
+    User.update({'assign._id':req.body.id},{$set:{
+        "assign.$[outer].statuse":1,
+        
+
+    }},{ "arrayFilters":[{"outer._id": req.body.aid}]})
     .then(result=>{
         const sub=result.assign
-        res.status(200).send({sub})
+        res.status(200).send('GRT!! Have yourself a Treat you have earned it')
     })
     .catch(err =>{
         res.status(500).send(err)
