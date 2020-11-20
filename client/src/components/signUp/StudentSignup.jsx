@@ -96,7 +96,16 @@ const StudentSignup = ({ history }) => {
 				axios.post("http://localhost:5000/student/add", values)
 					.then(res => {
 						console.log("User successfully added");
-						history.push("/student/login")
+						console.log(res.data);
+						axios.post("http://localhost:5000/classwork/addStudent/" + res.data.user._id, {
+							id: res.data.user._id
+						}).then(res => {
+							console.log("Success");
+							history.push("/student/login")
+						}).catch(err => {
+							console.log("There is an error here in initialising the students");
+							console.log(err);
+						});
 					}).catch(err => {
 						console.log("Error here in adding the student");
 						console.log(err);

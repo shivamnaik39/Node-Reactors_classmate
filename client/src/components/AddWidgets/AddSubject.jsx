@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core'
 import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui'
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 const useStyles = makeStyles((theme) =>
@@ -75,26 +75,42 @@ const useStyles = makeStyles((theme) =>
 	})
 )
 
-const AddSubject = (props) => {
+const AddSubject = ({history}) => {
 	const classes = useStyles()
-	const initialValues = { name: '', duration: null }
-
+	const initialValues = { sname: '', faculty: null }
+	useEffect(() => {
+        let token = JSON.parse(localStorage.getItem("classmate"))
+        if (!token) 
+            history.push("/login")
+        console.log(token.userId);
+	}, [])
 	const submit = (values, { setSubmitting }) => {
 		setTimeout(() => {
 			setSubmitting(false)
-			alert(JSON.stringify(values), null, 2)
+			console.log(values)
+			let token = JSON.parse(localStorage.getItem("classmate"))
+			alert(token.userId)
+			axios.put("http://localhost:5000/classwork/addSubject/" + token.userId, values)
+				.then(res => {
+					console.log("Successfully added a subject");
+					console.log(res);
+					history.push("/subjects")
+				}).catch(err => {
+					console.log("There is an error here in adding the subject");
+					console.log(err);
+			})
 		}, 500)
 	}
 
 	const validate = (values) => {
 		const errors = {}
-		if (!values.name) {
-			errors.name = 'Required'
+		if (!values.sname) {
+			errors.sname = 'Required'
 		}
-		if (!values.duration) {
-			errors.duration = 'Required'
-		} else if (values.duration <= 0) {
-			errors.duration = 'Invalid Duration'
+		if (!values.faculty) {
+			errors.faculty = 'Required'
+		} else if (values.faculty <= 0) {
+			errors.faculty = 'Invalid Duration'
 		}
 		return errors
 	}
@@ -109,7 +125,7 @@ const AddSubject = (props) => {
 						<Field
 							className={classes.field}
 							component={TextField}
-							name='name'
+							name='sname'
 							type='text'
 							label='Subject Name'
 							InputProps={{
@@ -120,7 +136,7 @@ const AddSubject = (props) => {
 						<Field
 							className={classes.field}
 							component={TextField}
-							name='duration'
+							name='faculty'
 							type='number'
 							label='Subject Duration (Weeks)'
 							InputProps={{

@@ -26,7 +26,8 @@ var upload = multer({
     
 });
 //Works
-router.post('/addStudent/:id',(req,res)=>{
+router.post('/addStudent/:id', (req, res) => {
+    console.log(req.params.id)
     const studentid=req.params.id
     const syllabus=' '
     const subject=[{
@@ -36,7 +37,6 @@ router.post('/addStudent/:id',(req,res)=>{
         notes:[{link:' ',title:' '}],
         extnotes:[{link:' ',title:' '}],
         assid:[{ids:' '}]
-
     }]
     const assign=[{
         Aname: ' ',
@@ -92,14 +92,12 @@ router.put('/addAssign/:id',(req,res)=>{
     console.log(req.body)
     User.findOneAndUpdate({studentid:req.params.id},{$push:{"assign":{
         "Aname":req.body.aname,
-        "dueDate":Date(req.body.date),
-        "statuse":-1,
-        "content":' ',
+        "dueDate":Date(req.body.dueDate),
+        "statuse":req.body.status,
+        "content":req.body.content,
         "grades":0
     }
 }
-    
-
 })
 .then(result=>{
     console.log(result)

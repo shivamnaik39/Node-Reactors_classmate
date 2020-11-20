@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Typography } from "@material-ui/core"
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -40,22 +40,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 function Sidebar({history}) {
     const classes = useStyles();
-    useEffect(() => {
-        let token = JSON.parse(localStorage.getItem("classmate"))
-        if (!token) 
-            history.push("/login")
-        else {
-            //this part doesnt work. still work needs to be done here
-            console.log(token.userId);
-            axios.get("http://localhost:5000/classwork//GetSub/" + token.userId)
-                .then(res => {
-                console.log(res.data);
-                }).catch(err => {
-                    console.log("There is an error here in retriving data");
-                    console.log(err);
-                })
-        }
-    }, [])
     return (
         <>
         <Grid container>

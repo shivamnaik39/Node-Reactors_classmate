@@ -91,15 +91,15 @@ const status = [
 		label: 'None',
 	},
 	{
-		value: 'working',
+		value: '-1',
 		label: 'Working',
 	},
 	{
-		value: 'under review',
+		value: '0',
 		label: 'Under Review',
 	},
 	{
-		value: 'complete',
+		value: '1',
 		label: 'Complete',
 	},
 ]
@@ -121,25 +121,33 @@ const status = [
 const AddClasswork = (props) => {
 	const classes = useStyles()
 	const initialValues = {
-		name: '',
+		aname: '',
 		grades: null,
 		status: 'none',
 		// priority: 'medium',
 		dueDate: new Date(),
-		description: '',
+		content: '',
 	}
 
 	const submit = (values, { setSubmitting }) => {
 		setTimeout(() => {
 			setSubmitting(false)
-			alert(JSON.stringify(values), null, 2)
+			let token = JSON.parse(localStorage.getItem("classmate"))
+			axios.put("http://localhost:5000/classwork/addAssign/" + token.userId, values)
+				.then(res => {
+					console.log("data successfully entered")
+					console.log(res);
+				}).catch(err => {
+					console.log("There is an error in add an assignment");
+					console.log(err);
+				});
 		}, 500)
 	}
 
 	const validate = (values) => {
 		const errors = {}
-		if (!values.name) {
-			errors.name = 'Required'
+		if (!values.aname) {
+			errors.aname = 'Required'
 		}
 		if (!values.grades) {
 			errors.grades = 'Required'
@@ -163,7 +171,7 @@ const AddClasswork = (props) => {
 							<Field
 								className={classes.field}
 								component={TextField}
-								name='name'
+								name='aname'
 								type='text'
 								label='Classwork Name'
 								InputProps={{
@@ -241,7 +249,7 @@ const AddClasswork = (props) => {
 							<Field
 								className={classes.field}
 								component={TextField}
-								name='description'
+								name='content'
 								type='text'
 								label='Description'
 								multiline

@@ -1,5 +1,5 @@
 import { Grid, Typography } from '@material-ui/core'
-import React from 'react'
+import React,{useState} from 'react'
 import AssignmentCard from './AssignmentCard'
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -14,16 +14,17 @@ const useStyles = makeStyles((theme) => ({
         margin: "auto"
     }
 }))
-function AssignmentSection({ status }) {
-    const classes=useStyles()
-    return (
+function AssignmentSection({ status,data }) {
+    const classes = useStyles()
+      return (
         <Grid container item sm={3} justify="space-around" alignItems="center" direction="column" className={classes.assignmentsection}>
             <Typography className={classes.title}>{status}</Typography>
             <br />
             <Grid item>
-                <AssignmentCard status={status} />
-                <AssignmentCard status={status} />
-                <AssignmentCard status={status} />
+                {
+                      data.map((e, i) =>
+                          <AssignmentCard element={e} status={status}/>)
+                }
             </Grid>
         </Grid>
     )
