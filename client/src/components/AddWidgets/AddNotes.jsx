@@ -1,15 +1,13 @@
 import {
 	Button,
-	LinearProgress,
 	Typography,
 	makeStyles,
 	createStyles,
 	Grid,
 } from '@material-ui/core'
-import { Formik, Form, Field } from 'formik'
+import { Field } from 'formik'
 import { TextField } from 'formik-material-ui'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React,{useState} from 'react'
 import axios from 'axios'
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -72,65 +70,80 @@ const useStyles = makeStyles((theme) =>
 			fontWeight: 'bold',
 			fontSize: '1rem',
 		},
+		fileinput: {
+			paddingBottom:"5px",
+			marginTop:"20px",
+			borderBottom: "1px solid rgba(0,0,0,0.5)",
+		},
+		forminput: {
+			border: "none",
+			outline: "null",
+			borderBottom: "1px solid rgba(0,0,0,0.5)",
+			background: "#e0e0e0",
+			width: "250px",
+			
+		},
+		formpart: {
+			minHeight:"100vh"
+		},
 	})
 )
 
 const AddNotes = (props) => {
 	const classes = useStyles()
-	const initialValues = { title: '', file: null }
-
-	const submit = (values, { setSubmitting }) => {
-		setTimeout(() => {
-			setSubmitting(false)
-			alert(JSON.stringify(values), null, 2)
-		}, 500)
-	}
-
-	const validate = (values) => {
-		const errors = {}
-		if (!values.title) {
-			errors.title = 'Required'
-		}
-		if (!values.duration) {
-			errors.duration = 'Required'
-		} else if (values.duration <= 0) {
-			errors.duration = 'Invalid Duration'
-		}
-		return errors
-	}
+    const [name,setname]=useState("")
+    const [file, setfile] = useState("")
+    const [img,setImage]=useState("")
+    const uploadpic=(e)=>{
+        setfile(e.target.value)
+    }
+    const submit=(e)=>{
+        e.preventDefault()
+        const data=new FormData();
+        data.append("name",name)
+        data.append("file",file)
+        const multerimage=URL.createObjectURL(file)
+        alert(multerimage)
+        // axios.post("http://localhost:5000/user/upload",data)
+        // .then(res=>{
+        //     console.log(res)
+        // }).catch(err=>{
+        //     console.log(err)
+        // })
+    } 
+	
 	return (
-		<Formik initialValues={initialValues} validate={validate} onSubmit={submit}>
-			{({ submitForm, isSubmitting }) => (
-				<Form className={classes.form} autoComplete='off'>
+		<Grid container justify="center" alignitems="center" className={classes.formpart}>
+		<form className={classes.form} autoComplete='off' encType="multipart/form-data" onSubmit={submit}>
 					<Typography variant='h5' component='h2' className={classes.title}>
 						Add Notes
 					</Typography>
 					<div className={classes.fields}>
-						<Field
+						<input
 							className={classes.field}
 							component={TextField}
-							name='title'
+							name='name'
 							type='text'
-							label='Notes Title'
+							placeholder='Notes Title'
 							InputProps={{
 								className: classes.fieldInput,
-							}}
-						/>
+					}}
+					className={classes.forminput}
+							onChange={e=>{
+								const {value}=e.target
+								setname(value)
+							}} 
+		/>
 						<br />
-						<Field
-							className={classes.field}
-							component={TextField}
-							name='duration'
-							type='file'
-							label='Notes file'
-							InputProps={{
-								className: classes.fieldInput,
-								accept: '.pdf',
-							}}
-						/>
+						<input type="file" name="file" required
+						  accept="application/pdf" className={classes.fileinput} onChange={e => {
+											const file = e.target.files[0];
+											setfile(file)
+									}}
+						 />
+						
 						<br />
 
-						{isSubmitting && <LinearProgress />}
 					</div>
 
 					{/* Log In Action */}
@@ -138,8 +151,7 @@ const AddNotes = (props) => {
 						<Button
 							className={classes.loginButton}
 							variant='contained'
-							disabled={isSubmitting}
-							onClick={submitForm}
+							type="submit"
 							color='primary'
 						>
 							Add
@@ -147,10 +159,49 @@ const AddNotes = (props) => {
 					</div>
 					<br />
 					<br />
-				</Form>
-			)}
-		</Formik>
+			</form>
+			</Grid>
 	)
 }
 
 export default AddNotes
+// import React, { useState,useEffect } from 'react'
+// import axios from "axios";
+// function Uploadfile() {
+//     const [name,setname]=useState("")
+//     const [file, setfile] = useState("")
+//     const [img,setImage]=useState("")
+//     const uploadpic=(e)=>{
+//         setfile(e.target.value)
+//     }
+//     const submit=(e)=>{
+//         e.preventDefault()
+//         const data=new FormData();
+//         data.append("name",name)
+//         data.append("file",file)
+//         const multerimage=URL.createObjectURL(file)
+//         alert(multerimage)
+//         axios.post("http://localhost:5000/user/upload",data)
+//         .then(res=>{
+//             console.log(res)
+//         }).catch(err=>{
+//             console.log(err)
+//         })
+//     }
+//     return (
+//         <>
+// <form class="uploadfile" encType="multipart/form-data" onSubmit={submit}>
+    
+//     <input type="text" placeholder="name" name="name" onChange={e=>{
+//         const {value}=e.target
+//         setname(value)
+//     }} />
+//     <input type="file" name="file" onChange={e=>{
+//         const file=e.target.files[0];
+//         setfile(file)}}/>
+//     <button type="submit">Upload now</button>
+// </form>
+// </>
+//     )
+// }
+// export default Uploadfile
