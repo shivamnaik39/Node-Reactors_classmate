@@ -9,10 +9,13 @@ import StudentSignup from '../components/signUp/StudentSignup'
 import CompanySignup from '../components/signUp/CompanySignup'
 import AddSubject from '../components/AddWidgets/AddSubject'
 import TestModal from '../components/TestModal'
-import Home from "../components/Home/Home"
-import Sidebar from "../components/SubjectPage/Sidebar"
 import SubjectPage from "../components/Subject/Subjectcard"
 import AddClasswork from '../components/AddWidgets/AddClasswork'
+import Home from '../components/Home/Home'
+import Sidebar from '../components/SubjectPage/Sidebar'
+import Jobs from '../components/Jobs/Jobs'
+import JobDescription from '../components/Jobs/JobDescription'
+
 const AppRouter = () => (
 	<Router>
 		<Navbar />
@@ -43,10 +46,12 @@ const AppRouter = () => (
 			<Route path='/student/addsub' component={AddSubject} exact={true} />
 			<Route path='/student/addassignment' component={AddClasswork} exact={true} />
 			<Route path='/testmodal' component={TestModal} exact={true} />
-			<Route path="/home" component={Home} exact={true} />
-			{/* <Route path="/classwork" component={Sidebar} /> */}
 			<Route path="/subjects" component={SubjectPage} />
 			<Route path="/subject/:id" component={Sidebar} />
+			<Route path='/home' component={Home} exact={true} />
+			<Route path='/classwork' component={Sidebar} />
+			<Route path='/jobs' component={Jobs} exact={true} />
+			<Route path='/jobs/:id' component={JobDescription} exact={true} />
 			<Route component={PageNotFound} />
 		</Switch>
 	</Router>

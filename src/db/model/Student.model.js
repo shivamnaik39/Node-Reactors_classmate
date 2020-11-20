@@ -24,6 +24,7 @@ const StudentSchema=new Schema({
         required:true,
         minlength:8
     },
+    resume:{type:String,required:true},
     resetToken:{type:String,required:true},
     expiresToken:{type:String,required:true}
     

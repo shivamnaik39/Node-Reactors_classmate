@@ -7,6 +7,7 @@ const saltRound=8;
 const nodemailer=require('nodemailer');
 
 const crypto=require('crypto');
+const { request } = require('http');
 
 
 const transporter=nodemailer.createTransport({
@@ -20,17 +21,13 @@ const transporter=nodemailer.createTransport({
 
 const keys=process.env.MONGODB_URL;
 
-router.route('/').get((req,res)=>{
+router.route('/GetJob').get((req,res)=>{
     User.find()
     .then(user=>res.json(user))
     .catch(err=>res.status(400).json('Error:'+err))
 })
 router.route('/add').post((req, res) => {
     console.log("company signin route called")
-    User.findOne({email:req.body.email},(err,user)=>{
-        if(!user)
-        {
-            console.log(req.body.email)
             const firstname=req.body.firstname
             const lastname=req.body.lastname
             const email=req.body.email
@@ -66,14 +63,7 @@ router.route('/add').post((req, res) => {
                  let token=jwt.sign(payload,process.env.SECRET_KEY)
                  res.status(200).send({token})
              })
-             .catch(err=> res.status(400).json('Error:'+err))*/
-
-        }
-        else if(user){
-            res.status(401).send('User Already exists')
-        }
-    })
-    
+             .catch(err=> res.status(400).json('Error:'+err))*/   
 })
 router.post('/login',(req,res)=>{
 
@@ -191,4 +181,5 @@ router.post('/new-password',(req,res)=>{
 
 
 })
+
 module.exports=router;

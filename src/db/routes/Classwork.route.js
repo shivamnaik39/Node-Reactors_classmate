@@ -25,9 +25,33 @@ var upload = multer({
     storage: storage,
     
 });
-//Works
-router.post('/addStudent/:id', (req, res) => {
-    console.log(req.params.id)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Works fine
+router.post('/addStudent/:id',(req,res)=>{
     const studentid=req.params.id
     const syllabus=' '
     const subject=[{
@@ -39,6 +63,7 @@ router.post('/addStudent/:id', (req, res) => {
         assid:[{ids:' '}]
     }]
     const assign=[{
+        subid:' ',
         Aname: ' ',
         dueDate:Date(),
         statuse:1,
@@ -73,7 +98,7 @@ router.post('/addStudent/:id', (req, res) => {
                 });
         })
 })
-//work
+//work fine required:(file name syllabus)
 router.post('/addSyllabus/:id',upload.single('syllabus'),(req,res)=>{
     console.log(req.body)
     const url=req.protocol+'://'+req.get('host')
@@ -87,10 +112,11 @@ router.post('/addSyllabus/:id',upload.single('syllabus'),(req,res)=>{
     })
     .catch(err=>res.status(500).send({err}))
 })
-//Check
+//Works Fine requires subject id Ass Name and Date 
 router.put('/addAssign/:id',(req,res)=>{
     console.log(req.body)
     User.findOneAndUpdate({studentid:req.params.id},{$push:{"assign":{
+        "subid":req.body.subid,
         "Aname":req.body.aname,
         "dueDate":Date(req.body.dueDate),
         "statuse":req.body.status,
@@ -108,7 +134,7 @@ router.put('/addAssign/:id',(req,res)=>{
     res.status(500).send(err)
 })
 })
-//works
+//works fine requires subject name faculty
 router.put('/addSubject/:id',(req, res)=>{
     console.log(req.body)
     User.findOneAndUpdate({studentid:req.params.id},{$push:{"subject":{
@@ -116,8 +142,7 @@ router.put('/addSubject/:id',(req, res)=>{
         "faculty":req.body.faculty,
         "grade":[{marks:0}],
         "notes":[{link:' '}],
-        "extnotes":[{link:' '}],
-        "assid":[{ids:' '}]
+        "extnotes":[{link:' '}]
     }
 }
     })
@@ -131,43 +156,96 @@ router.put('/addSubject/:id',(req, res)=>{
 })
     
 })
-//works
+//works fine requires subject id
 router.get('/GetAssignment/:id',(req,res)=>{
-    User.findOne({studentid:req.params.id},(err,user)=>{
+    console.log(req.params.id)
+    const Assign=[]
+    User.find({'assign.subid':req.params.id},(err,user)=>{
         if(err){
             res.status(500).send(err)
         }
-        if(user.assign==null){
+        if(user[0].assign==null){
             res.status(404).send('Not Found')
         }
         else{
-            const Assgn=user.assign
-            res.status(200).send({Assgn})
+            const Stud=user[0]
+            console.log(Stud.assign[1])
+            for(let i=1;i<Stud.assign.length;i++){
+                if(Stud.assign[i].subid==req.params.id){
+                    Assign.push(Stud.assign[i])
+                }
+            }
+            if(Assign.length!=0){
+                return res.status(200).send(Assign)
+            }
+            else{
+                return res.status(404).send('No Data Found')
+            }
         }
     })
+    .then(result=>{
+        console.log(result)
+    })
 })
-//works
+//works fine requires subjectid
 router.get('/GetNotes/:id',(req,res)=>{
+    const Notes=[]
     User.findOne({'subject._id':req.params.id},(err,user)=>{
         if(err){
             res.status(500).send(err)
+        }
+        if(user.subject==null){
+            res.status(404).send('Not Found')
         }
         else{
             for(let i=0;i<user.subject.length;i++){
                 if(user.subject[i]._id==req.params.id)
                 {
                     console.log('in for')
-                    const Notes=user.subject[i].notes
-                    return res.status(200).send({Notes})
+                    Notes.push(user.subject[i].notes)
+                    
                 }
             }
+            if(Notes.length!=0){
+                return res.status(200).send({Notes})
+            }
+            else{
             return res.status(404).send('Not Found')
-            
+            }
         }
     })
 })
-//works
-router.get('/GetSub/:id',(req,res)=>{
+//work fine required subject id
+router.get('/GetNotesExt/:id',(req,res)=>{
+    const Notes=[]
+    User.findOne({'subject._id':req.params.id},(err,user)=>{
+        if(err){
+            res.status(500).send(err)
+        }
+        if(user.subject==null){
+            res.status(404).send('Not Found')
+        }
+        else{
+            for(let i=0;i<user.subject.length;i++){
+                if(user.subject[i]._id==req.params.id)
+                {
+                    console.log('in for')
+                    Notes.push(user.subject[i].extnotes)
+                    
+                }
+            }
+            if(Notes.length!=0){
+                return res.status(200).send({Notes})
+            }
+            else{
+            return res.status(404).send('Not Found')
+            }
+        }
+    })
+})
+//works fine requires studentid
+router.get('/GetSub/:id', (req, res) => {
+    console.log(req.params.id)
     User.findOne({studentid:req.params.id},(err,user)=>{
         if(err){
             
@@ -182,7 +260,7 @@ router.get('/GetSub/:id',(req,res)=>{
         }
     })
 })
-//works
+//works fine requires content file and title
 router.put('/addNotes/:id',upload.single('content'),(req,res)=>{
     console.log(req.body)
     const url=req.protocol+'://'+req.get('host')
@@ -201,7 +279,7 @@ router.put('/addNotes/:id',upload.single('content'),(req,res)=>{
 })
     
 })
-//works
+//works fine requires link and title
 router.put('/addLink/:id',(req,res)=>{
     console.log(req.body.subid)
     User.findOneAndUpdate({'subject._id':req.body.subid},{$push:{
@@ -218,7 +296,7 @@ router.put('/addLink/:id',(req,res)=>{
 })
     
 })
-//works
+//works requires grade subject id 
 router.put('/addGrades/:id',(req,res)=>{
     console.log(req.body)
     User.findOneAndUpdate({'subject._id':req.body.subid},{$push:{
@@ -235,10 +313,10 @@ router.put('/addGrades/:id',(req,res)=>{
 })
     
 })
-//check
+//worksFine nothing to be honest
 router.put('/addAssStatus/:id',(req,res)=>{
     
-    User.update({'assign._id':req.body.aid},{$set:{
+    User.updateOne({'assign._id':req.body.aid},{$set:{
         "assign.$[outer].statuse":0,
         }},{ "arrayFilters":[{"outer._id": req.body.aid}]})
     .then(result=>{
@@ -250,12 +328,11 @@ router.put('/addAssStatus/:id',(req,res)=>{
         res.status(500).send(err)
     }) 
     })
-//check
+//workfine requires grade
 router.put('/updateAssStatus/:id',(req,res)=>{
-    User.update({'assign._id':req.body.id},{$set:{
+    User.updateOne({'assign._id':req.body.aid},{$set:{
         "assign.$[outer].statuse":1,
-        
-
+        "assign.$[outer].grades":req.body.grade
     }},{ "arrayFilters":[{"outer._id": req.body.aid}]})
     .then(result=>{
         const sub=result.assign
@@ -265,7 +342,7 @@ router.put('/updateAssStatus/:id',(req,res)=>{
         res.status(500).send(err)
     }) 
 })
-//check
+//check future ke liye 
 router.put('/addCopy/:id',upload.single('content'),(req,res)=>{
     console.log(req.body.subid)
     const url=req.protocol+'://'+req.get('host')
