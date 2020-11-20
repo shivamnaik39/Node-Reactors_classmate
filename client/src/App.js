@@ -1,10 +1,6 @@
 import React from "react";
-import AssignmentPage from "./components/Assignment/AssignmentPage";
-import Pdf from "./components/Pdf/Pdf";
-import Sidebar from "./components/SubjectPage/Sidebar";
-import AppRouter from "./routers/AppRouter";
-import LinkCard from "./components/LinkCard/LinkCard"
-import LinkPage from "./components/LinkCard/LinkPage";
+// import Calendarr from "./components/Calendar/Calendar";
+import AppRouter from "./routers/AppRouter"
 function App() {
 	return (
 		<div>

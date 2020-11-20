@@ -1,13 +1,14 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import LandingPage from '../components/LandingPage/Landingpage'
+import LandingPage from '../components/Landingpage/Landingpage'
 import LoginPage from '../components/LogIn/LoginPage'
 import Form from '../components/LogIn/MyForm'
 import PageNotFound from '../components/PageNotFound'
 import Navbar from '../components/Navbar/Navbar'
 import StudentSignup from '../components/signUp/StudentSignup'
 import CompanySignup from '../components/signUp/CompanySignup'
-
+import AddSubject from '../components/AddWidgets/AddSubject'
+import TestModal from '../components/TestModal'
 
 const AppRouter = () => (
 	<Router>
@@ -36,6 +37,8 @@ const AppRouter = () => (
 				render={(props) => <Form {...props} signUp={false} company={true} />}
 				exact={true}
 			/>
+			<Route path='/student/addsub' component={AddSubject} exact={true} />
+			<Route path='/testmodal' component={TestModal} exact={true} />
 			<Route component={PageNotFound} />
 		</Switch>
 	</Router>
