@@ -1,9 +1,10 @@
 import { Grid, Typography } from '@material-ui/core'
-import React from 'react'
-import subjects from "../../assets/subjects.svg"
-import money from "../../assets/money.svg"
-import jobs from "../../assets/jobs.svg"
+import React,{useEffect} from 'react'
+import classwork from "../../assets/subjects.svg"
+import finance from "../../assets/money.svg"
+import internships from "../../assets/jobs.svg"
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from "react-router-dom"
 
 const useStyles = makeStyles((theme) => ({
     svgicon: {
@@ -16,13 +17,18 @@ const useStyles = makeStyles((theme) => ({
     selectionicons: {
         minHeight: "calc(100vh - 50px)",
         marginTop: "50px",
+        "& a": {
+            color: "black",
+            textDecoration: "none",
+        },
         [theme.breakpoints.down("xs")]: {
             flexDirection:"column"
-        }
+        },
     },
     title: {
         fontSize: "30px",
-        margin:"20px auto",
+        margin: "20px auto",
+        textTransform: "capitalize",
         [theme.breakpoints.down("sm")]: {
             fontSize: "25px"
         },
@@ -32,23 +38,39 @@ const useStyles = makeStyles((theme) => ({
         }
     }
 }))
-function Home() {
-    const classes=useStyles()
+function Home({history}) {
+    const classes = useStyles()
+    useEffect(() => {
+        let token = JSON.parse(localStorage.getItem("classmate"))
+        if (!token) 
+            history.push("/login")
+    }, [])
     return (
             <Grid container item  justify="space-around" alignItems="center" className={classes.selectionicons}>
-                <Grid container item sm={4} justify="center" alignItems="center" direction="column" >
-                    <img src={subjects} alt="learn" className={classes.svgicon} />
-                    <Typography className={classes.title}>Classwork</Typography>
-                </Grid>
-                <Grid container item sm={4} justify="center" alignItems="center" direction="column" >
-                    <img src={jobs} alt="jobs" className={classes.svgicon} />
-                    <Typography className={classes.title}>Internships</Typography>
-                </Grid>
-                <Grid container item sm={4} justify="center" alignItems="center" direction="column" >
-                    <img src={money} alt="money" className={classes.svgicon} />
-                    <Typography className={classes.title}>Finance</Typography>
-                </Grid>
-            </Grid>
+            {
+                [
+                    {
+                        name: "classwork",
+                        photo: classwork,
+                    },
+                    {
+                        name: "internships",
+                        photo:internships,    
+                    },
+                    {
+                        name: "finance",
+                        photo: finance,
+                    }
+                ].map((e, i) => 
+                    <Link to={`/${e.name}`} key={i}>
+                        <Grid container item sm={4} justify="center" alignItems="center" direction="column" >
+                            <img src={e.photo} alt="jobs" className={classes.svgicon} />
+                            <Typography className={classes.title}>{e.name}</Typography>
+                        </Grid>
+                    </Link>
+                )
+            }
+        </Grid>
     )
 }
 

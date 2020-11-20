@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Typography } from "@material-ui/core"
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -7,7 +7,7 @@ import BookIcon from '@material-ui/icons/Book';
 import LinkIcon from '@material-ui/icons/Link';
 import {CardActionArea} from '@material-ui/core';
 import AssignmentPage from '../Assignment/AssignmentPage';
-import Navbar from "../Navbar/Navbar"
+import axios from "axios"
 const useStyles = makeStyles((theme) => ({
     sidebar: {
         minHeight: "calc(100vh - 50px)",
@@ -38,11 +38,26 @@ const useStyles = makeStyles((theme) => ({
         }
     }
 }))
-function Sidebar() {
-    const classes=useStyles()
+function Sidebar({history}) {
+    const classes = useStyles();
+    useEffect(() => {
+        let token = JSON.parse(localStorage.getItem("classmate"))
+        if (!token) 
+            history.push("/login")
+        else {
+            //this part doesnt work. still work needs to be done here
+            console.log(token.userId);
+            axios.get("http://localhost:5000/classwork//GetSub/" + token.userId)
+                .then(res => {
+                console.log(res.data);
+                }).catch(err => {
+                    console.log("There is an error here in retriving data");
+                    console.log(err);
+                })
+        }
+    }, [])
     return (
         <>
-            <Navbar />
         <Grid container>
             <Grid container item sm={2} md={1}  direction="column">
                 <Grid className={classes.sidebar}>
