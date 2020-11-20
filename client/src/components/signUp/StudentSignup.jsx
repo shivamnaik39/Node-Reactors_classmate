@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) =>
 	})
 )
 
-const StudentSignup = ({ signUp, company }) => {
+const StudentSignup = ({ history }) => {
 	const classes = useStyles()
 	const initialValues = {
 		firstname: '',
@@ -95,7 +95,8 @@ const StudentSignup = ({ signUp, company }) => {
 			if (values.password === values.confirmPassword) {
 				axios.post("http://localhost:5000/student/add", values)
 					.then(res => {
-					console.log("User successfully added");
+						console.log("User successfully added");
+						history.push("/student/login")
 					}).catch(err => {
 						console.log("Error here in adding the student");
 						console.log(err);

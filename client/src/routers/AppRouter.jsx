@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import LandingPage from '../components/Landingpage/Landingpage'
+import LandingPage from '../components/LandingPage/Landingpage'
 import LoginPage from '../components/LogIn/LoginPage'
 import Form from '../components/LogIn/MyForm'
 import PageNotFound from '../components/PageNotFound'
@@ -9,6 +9,8 @@ import StudentSignup from '../components/signUp/StudentSignup'
 import CompanySignup from '../components/signUp/CompanySignup'
 import AddSubject from '../components/AddWidgets/AddSubject'
 import TestModal from '../components/TestModal'
+import Home from "../components/Home/Home"
+import Sidebar from "../components/SubjectPage/Sidebar"
 
 const AppRouter = () => (
 	<Router>
@@ -39,6 +41,8 @@ const AppRouter = () => (
 			/>
 			<Route path='/student/addsub' component={AddSubject} exact={true} />
 			<Route path='/testmodal' component={TestModal} exact={true} />
+			<Route path="/home" component={Home} exact={true} />
+			<Route path="/classwork" component={Sidebar} />
 			<Route component={PageNotFound} />
 		</Switch>
 	</Router>

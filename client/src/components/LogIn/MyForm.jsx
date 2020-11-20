@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) =>
 	})
 )
 
-const LoginForm = ({ signUp, company }) => {
+const LoginForm = ({ signUp, company ,history}) => {
 	const classes = useStyles()
 	const initialValues = { email: '', password: '' }
 
@@ -87,7 +87,13 @@ const LoginForm = ({ signUp, company }) => {
 			if (!company) {
 				axios.post("http://localhost:5000/student/login", values)
 					.then(res => {
-					console.log("successfully authenticated");
+						console.log("successfully authenticated");
+						console.log(res.data);
+						localStorage.setItem("classmate",JSON.stringify( {
+							token: res.data.token,
+							userId:res.data.user._id
+						}))
+						history.push("/home")
 					}).catch(err => {
 						console.log("Error here in validating user");
 						console.log(err);
@@ -96,7 +102,7 @@ const LoginForm = ({ signUp, company }) => {
 				values.company = true
 				axios.post("http://localhost:5000/recruitor/login", values)
 					.then(res => {
-					console.log("Company authenticated");
+						console.log("Company authenticated");
 					}).catch(err => {
 						console.log("There is an error here in authenticating the company");
 						console.log(err);
