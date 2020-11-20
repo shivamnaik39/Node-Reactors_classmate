@@ -25,7 +25,7 @@ router.route('/').get((req,res)=>{
     .catch(err=>res.status(400).json('Error:'+err))
 })
 router.route('/add').post((req,res)=>{
-    
+    console.log(req.body.email)
     User.findOne({email:req.body.email},(err,user)=>{
         if(err){
             console.log(err)

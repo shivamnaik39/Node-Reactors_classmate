@@ -20,16 +20,13 @@ const transporter=nodemailer.createTransport({
 
 const keys=process.env.MONGODB_URL;
 
-
-
-
-
 router.route('/').get((req,res)=>{
     User.find()
     .then(user=>res.json(user))
     .catch(err=>res.status(400).json('Error:'+err))
 })
-router.route('/add').post((req,res)=>{
+router.route('/add').post((req, res) => {
+    console.log("company signin route called")
     User.findOne({email:req.body.email},(err,user)=>{
         if(!user)
         {

@@ -9,6 +9,7 @@ import {
 import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui'
 import React from 'react'
+import axios from "axios"
 const useStyles = makeStyles((theme) =>
 	createStyles({
 		root: {
@@ -98,36 +99,57 @@ const useStyles = makeStyles((theme) =>
 const CompanySignup = ({ signUp, company }) => {
 	const classes = useStyles()
 	const initialValues = {
-		firstName: '',
-		lastName: '',
-		companyName: '',
-		companyLocation: '',
+		firstname: '',
+		lastname: '',
+		CompanyName: '',
+		CompanyLoc: '',
 		email: '',
 		password: '',
 		confirmPassword: '',
+		numberemp: '',
+		description: '',
+		type: '',
+		tag: '',
 	}
 
 	const submit = (values, { setSubmitting }) => {
 		setTimeout(() => {
 			setSubmitting(false)
-
-			alert(JSON.stringify(values, null, 2))
+			axios.post("http://localhost:5000/recruitor/add", values)
+				.then(res => {
+				console.log("Company successfully added");
+				}).catch(err => {
+					console.log("Error here in registering the user");
+					console.log(err);
+				})
 		}, 500)
 	}
 
 	const validate = (values) => {
 		const errors = {}
-		if (!values.firstName) {
-			errors.firstName = 'Required'
+		if (!values.firstname) {
+			errors.firstname = 'Required'
 		}
-		if (!values.lastName) {
-			errors.lastName = 'Required'
+		if (!values.lastname) {
+			errors.lastname = 'Required'
 		}
-		if (!values.companyName) {
-			errors.companyName = 'Required'
+		if (!values.CompanyName) {
+			errors.CompanyName = 'Required'
 		}
-		if (!values.companyLocation) {
-			errors.companyLocation = 'Required'
+		if (!values.CompanyLoc) {
+			errors.CompanyLoc = 'Required'
+		}
+		if (!values.type) {
+			errors.type = 'Required'
+		}
+		if (!values.tag) {
+			errors.tag = 'Required'
+		}
+		if (!values.description) {
+			errors.description = 'Required'
+		}
+		if (!values.numberemp) {
+			errors.numberemp = 'Required'
 		}
 		if (!values.email) {
 			errors.email = 'Required'
@@ -171,7 +193,7 @@ const CompanySignup = ({ signUp, company }) => {
 								<Field
 									className={classes.field}
 									component={TextField}
-									name='firstName'
+									name='firstname'
 									type='text'
 									label='First Name'
 									variant='outlined'
@@ -183,7 +205,7 @@ const CompanySignup = ({ signUp, company }) => {
 								<Field
 									className={classes.field}
 									component={TextField}
-									name='lastName'
+									name='lastname'
 									type='text'
 									label='Last Name'
 									variant='outlined'
@@ -197,7 +219,7 @@ const CompanySignup = ({ signUp, company }) => {
 								<Field
 									className={classes.field}
 									component={TextField}
-									name='companyName'
+									name='CompanyName'
 									type='text'
 									label='Company Name'
 									variant='outlined'
@@ -209,7 +231,7 @@ const CompanySignup = ({ signUp, company }) => {
 								<Field
 									className={classes.field}
 									component={TextField}
-									name='companyLocation'
+									name='CompanyLoc'
 									type='text'
 									label='Company Location'
 									variant='outlined'
@@ -219,6 +241,56 @@ const CompanySignup = ({ signUp, company }) => {
 								/>
 							</div>
 							<br />
+							<div className={classes.company}>
+								<Field
+									className={classes.field}
+									component={TextField}
+									name='type'
+									type='text'
+									label='Company type'
+									variant='outlined'
+									InputProps={{
+										className: classes.fieldInput,
+									}}
+								/>
+								<br />
+								<Field
+									className={classes.field}
+									component={TextField}
+									name='tag'
+									type='text'
+									label='Company Tag'
+									variant='outlined'
+									InputProps={{
+										className: classes.fieldInput,
+									}}
+								/>
+							</div>
+							<br/>
+							<Field
+								className={classes.field}
+								component={TextField}
+								name='description'
+								type='text'
+								label='Company description'
+								variant='outlined'
+								InputProps={{
+									className: classes.fieldInput1,
+								}}
+							/>
+							<br/>
+							<Field
+								className={classes.field}
+								component={TextField}
+								name='numberemp'
+								type='text'
+								label='No of employess in company'
+								variant='outlined'
+								InputProps={{
+									className: classes.fieldInput1,
+								}}
+							/>
+							<br/>
 							<Field
 								className={classes.field}
 								component={TextField}

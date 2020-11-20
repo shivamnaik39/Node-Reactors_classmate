@@ -85,7 +85,6 @@ const LoginForm = ({ signUp, company }) => {
 		setTimeout(() => {
 			setSubmitting(false)
 			if (!company) {
-				console.log(values);
 				axios.post("http://localhost:5000/student/login", values)
 					.then(res => {
 					console.log("successfully authenticated");
@@ -95,7 +94,13 @@ const LoginForm = ({ signUp, company }) => {
 				})
 			} else {
 				values.company = true
-				alert(JSON.stringify(values, null, 2))
+				axios.post("http://localhost:5000/recruitor/login", values)
+					.then(res => {
+					console.log("Company authenticated");
+					}).catch(err => {
+						console.log("There is an error here in authenticating the company");
+						console.log(err);
+					})
 			}
 		}, 500)
 	}

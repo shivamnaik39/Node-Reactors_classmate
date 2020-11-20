@@ -9,6 +9,7 @@ import {
 import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui'
 import React from 'react'
+import axios from "axios"
 const useStyles = makeStyles((theme) =>
 	createStyles({
 		root: {
@@ -81,8 +82,8 @@ const useStyles = makeStyles((theme) =>
 const StudentSignup = ({ signUp, company }) => {
 	const classes = useStyles()
 	const initialValues = {
-		firstName: '',
-		lastName: '',
+		firstname: '',
+		lastname: '',
 		email: '',
 		password: '',
 		confirmPassword: '',
@@ -91,18 +92,28 @@ const StudentSignup = ({ signUp, company }) => {
 	const submit = (values, { setSubmitting }) => {
 		setTimeout(() => {
 			setSubmitting(false)
-
-			alert(JSON.stringify(values, null, 2))
+			if (values.password === values.confirmPassword) {
+				axios.post("http://localhost:5000/student/add", values)
+					.then(res => {
+					console.log("User successfully added");
+					}).catch(err => {
+						console.log("Error here in adding the student");
+						console.log(err);
+					})
+			}
+			else {
+				//validation here of incoreect password
+			}
 		}, 500)
 	}
 
 	const validate = (values) => {
 		const errors = {}
-		if (!values.firstName) {
-			errors.firstName = 'Required'
+		if (!values.firstname) {
+			errors.firstname = 'Required'
 		}
-		if (!values.lastName) {
-			errors.lastName = 'Required'
+		if (!values.lastname) {
+			errors.lastname = 'Required'
 		}
 		if (!values.email) {
 			errors.email = 'Required'
@@ -145,7 +156,7 @@ const StudentSignup = ({ signUp, company }) => {
 							<Field
 								className={classes.field}
 								component={TextField}
-								name='firstName'
+								name='firstname'
 								type='text'
 								label='First Name'
 								variant='outlined'
@@ -157,7 +168,7 @@ const StudentSignup = ({ signUp, company }) => {
 							<Field
 								className={classes.field}
 								component={TextField}
-								name='lastName'
+								name='lastname'
 								type='text'
 								label='Last Name'
 								variant='outlined'
