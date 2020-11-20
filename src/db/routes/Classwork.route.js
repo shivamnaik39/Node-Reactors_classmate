@@ -25,8 +25,38 @@ var upload = multer({
     storage: storage,
     
 });
+const nodemailer=require('nodemailer');
+const transporter=nodemailer.createTransport({
+    service:'Gmail' ,
+    
+    auth:{
+        user:'savishkargec@gmail.com',
+        pass:'for@*web'
+   }
+})
+let cron = require('node-cron');
 
 
+cron.schedule('2-4 58 0 1-31 * *', (req,res) => {
+
+   console.log('running a task every minute');
+   transporter.sendMail({
+    to:'shivamnaik8239@gmail.com',
+    from:"savishkargec@gmail.com",
+    subject:"Automatic Mail",
+    html:`
+    <p>Hi ,if you are recieing this message it is to tell you that this is an automated message and we have been successful in achieving it</p>
+    <h5>hhhhuuuurrrraaaaayyyyyyyy!!!!!, so pls tell me what is to be added in this mail and finance what are we doing?</h5>
+    `
+},(err,result)=>{
+    if(err){
+        console.log(err)
+    }
+    else{
+    }
+    transporter.close()
+})
+});
 
 
 
