@@ -77,6 +77,11 @@ const useStyles = makeStyles((theme) =>
 			fontWeight: 'bold',
 			fontSize: '1rem',
 		},
+		selectbox: {
+			[theme.breakpoints.down("xs")]: {
+				minWidth: "180px",
+			}
+		}
 	})
 )
 
@@ -178,6 +183,7 @@ const AddClasswork = (props) => {
 							/>
 							<br />
 							<Field
+								className={classes.selectbox}
 								component={TextField}
 								type='text'
 								name='status'

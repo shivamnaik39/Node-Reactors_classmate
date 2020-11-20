@@ -159,15 +159,13 @@ router.get('/GetNotes/:id',(req,res)=>{
     })
 })
 //works
-router.get('/GetSub/:id', (req, res) => {
-    console.log(req.params.id)
+router.get('/GetSub/:id',(req,res)=>{
     User.findOne({studentid:req.params.id},(err,user)=>{
         if(err){
             
             res.status(500).send(err)
         }
-        else {
-            console.log(user)
+        else{
             const Subject=user.subject
             res.status(200).send({Subject})
         }
