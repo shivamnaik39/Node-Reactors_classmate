@@ -1,7 +1,7 @@
 import { createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
-import Job from './Job'
-import jobs from './jobData'
+import Loan from './Loan'
+import loans from './loanData'
 
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -15,18 +15,18 @@ const useStyles = makeStyles((theme) =>
 	})
 )
 
-const Jobs = (props) => {
+const Loans = (props) => {
 	const classes = useStyles()
 	return (
 		<Grid container>
 			<Typography variant='h3' component='h1' className={classes.heading}>
-				Internships & Jobs
+				Education Loans
 			</Typography>
 			<Grid container spacing={3} className={classes.root}>
-				{jobs.map((job) => {
+				{loans.map((loan) => {
 					return (
-						<Grid item xs={12} sm={6} md={3} key={job.id}>
-							<Job job={job} />
+						<Grid item xs={12} sm={6} md={3} key={loan.id}>
+							<Loan loan={loan} />
 						</Grid>
 					)
 				})}
@@ -35,4 +35,4 @@ const Jobs = (props) => {
 	)
 }
 
-export default Jobs
+export default Loans

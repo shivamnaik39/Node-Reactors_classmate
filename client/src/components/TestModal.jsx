@@ -7,6 +7,7 @@ import AddClasswork from './AddWidgets/AddClasswork'
 import AddSubject from './AddWidgets/AddSubject'
 import AddNotes from './AddWidgets/AddNotes'
 import AddLink from './AddWidgets/AddLink'
+import AddJob from './AddWidgets/AddJob'
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -50,7 +51,8 @@ export default function TestModal() {
 					{/* <AddSubject/> */}
 					{/* <AddClasswork /> */}
 					{/* <AddNotes /> */}
-					<AddLink />
+					{/* <AddLink /> */}
+					<AddJob />
 				</Fade>
 			</Modal>
 		</div>
