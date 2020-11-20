@@ -5,6 +5,8 @@ import Backdrop from '@material-ui/core/Backdrop'
 import Fade from '@material-ui/core/Fade'
 import AddClasswork from './AddWidgets/AddClasswork'
 import AddSubject from './AddWidgets/AddSubject'
+import AddNotes from './AddWidgets/AddNotes'
+import AddLink from './AddWidgets/AddLink'
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -46,7 +48,9 @@ export default function TestModal() {
 			>
 				<Fade in={open}>
 					{/* <AddSubject/> */}
-					<AddClasswork />
+					{/* <AddClasswork /> */}
+					{/* <AddNotes /> */}
+					<AddLink />
 				</Fade>
 			</Modal>
 		</div>
