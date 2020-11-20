@@ -5,6 +5,7 @@ var Expenses=Schema({
     prices:{type:Number}
 });
 const BankSchema=Schema({
+    id:String,
     dueDate:String,
     Amount:{type:Number,required:required},
     paid:{type:Number,required:required},
