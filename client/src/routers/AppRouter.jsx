@@ -16,6 +16,7 @@ import Sidebar from '../components/SubjectPage/Sidebar'
 import Jobs from '../components/Jobs/Jobs'
 import JobDescription from '../components/Jobs/JobDescription'
 import AddAssignment from '../components/Assignment/AddAssignment'
+import Loans from '../components/Loans/Loans'
 
 const AppRouter = () => (
 	<Router>
@@ -53,6 +54,8 @@ const AppRouter = () => (
 			<Route path='/classwork' component={Sidebar} />
 			<Route path='/jobs' component={Jobs} exact={true} />
 			<Route path='/jobs/:id' component={JobDescription} exact={true} />
+			<Route path='/loans' component={Loans} exact={true} />
+
 			<Route component={PageNotFound} />
 		</Switch>
 	</Router>

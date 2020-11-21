@@ -1,5 +1,6 @@
 const express = require("express");
 const cors=require('cors')
+const path=require('path')
 const StudentRoute = require("./db/routes/Student.route")
 const ClassworkRoute = require("./db/routes/Classwork.route")
 const RecruitorRoute = require("./db/routes/Recruitor.route")

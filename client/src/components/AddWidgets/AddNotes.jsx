@@ -3,7 +3,7 @@ import {
 	Typography,
 	makeStyles,
 	createStyles,
-	Grid,
+	Grid
 } from '@material-ui/core'
 import { Field } from 'formik'
 import { TextField } from 'formik-material-ui'

@@ -1,16 +1,14 @@
 const mongoose =require('mongoose')
 const Schema=mongoose.Schema
-var Expenses=Schema({
-    goods:{type:String},
-    prices:{type:Number}
-});
+
 const BankSchema=Schema({
-    id:String,
-    dueDate:String,
+    maxloan:{type:Number,required:true},
+    intrestR:{type:Number,required:true},
     Amount:{type:Number,required:required},
-    paid:{type:Number,required:required},
-    
-    expenses:[Expenses]
+    expenses:{type:Number,required:required},
+    requirments:{type:String,required:true},
+    bankLink:{type:String,required:true},
+    useremail:{type:String,required:true}
 })
 const bank=mongoose.model('Bank',BankSchema)
 module.exports=bank
