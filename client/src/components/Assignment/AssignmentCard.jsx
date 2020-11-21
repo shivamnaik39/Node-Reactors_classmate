@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AssignmentCard({ status, element }) {
   const classes = useStyles();
-  console.log(element);
+  // console.log(element);
     return (
       <>
     <Card className={classes.root} variant="outlined">

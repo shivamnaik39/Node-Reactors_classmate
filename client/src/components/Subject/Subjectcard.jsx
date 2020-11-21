@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Typography } from "@material-ui/core"  
 import { makeStyles } from '@material-ui/core/styles';
 import axios from "axios";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
+import AddaSubject from "./AddASubject";
 const bgarray = [
     "https://image.freepik.com/free-vector/abstract-colorful-flow-shapes-background_23-2148235690.jpg",
     "https://image.freepik.com/free-vector/abstract-colorful-flow-shapes-background-design_23-2148237985.jpg",
@@ -83,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
                                 )
                             }
                         </Grid>
+                        <AddaSubject />
                     </>
                 );
 }

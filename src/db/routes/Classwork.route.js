@@ -81,7 +81,8 @@ cron.schedule('2-4 58 0 1-31 * *', (req,res) => {
 
 
 //Works fine
-router.post('/addStudent/:id',(req,res)=>{
+router.post('/addStudent/:id', (req, res) => {
+    console.log("called")
     const studentid=req.params.id
     const syllabus=' '
     const subject=[{
@@ -194,10 +195,11 @@ router.get('/GetAssignment/:id',(req,res)=>{
         if(err){
             res.status(500).send(err)
         }
-        if(user[0].assign==null){
-            res.status(404).send('Not Found')
+        if(user[0]==null){
+            res.status(200).send('No assignment')
         }
         else{
+            console.log(user)
             const Stud=user[0]
             console.log(Stud.assign[1])
             for(let i=1;i<Stud.assign.length;i++){
