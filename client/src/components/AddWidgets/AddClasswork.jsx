@@ -4,7 +4,6 @@ import {
 	Typography,
 	makeStyles,
 	createStyles,
-	Grid,
 	MenuItem,
 } from '@material-ui/core'
 import { Formik, Form, Field } from 'formik'
@@ -13,7 +12,6 @@ import { DatePicker } from 'formik-material-ui-pickers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import React from 'react'
-import { Link } from 'react-router-dom'
 import axios from 'axios'
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -127,7 +125,7 @@ const AddClasswork = (props) => {
 	const submit = (values, { setSubmitting }) => {
 		setTimeout(() => {
 			setSubmitting(false)
-			alert(JSON.stringify(values), null, 2)
+			alert(JSON.stringify(values, null, 2))
 		}, 500)
 	}
 
@@ -136,9 +134,7 @@ const AddClasswork = (props) => {
 		if (!values.name) {
 			errors.name = 'Required'
 		}
-		if (!values.grades) {
-			errors.grades = 'Required'
-		} else if (values.grades <= 0 || values.grades > 100) {
+		if (values.grades && (values.grades <= 0 || values.grades > 100)) {
 			errors.grades = 'Invalid Grades'
 		}
 		if (values.status === 'none') {
