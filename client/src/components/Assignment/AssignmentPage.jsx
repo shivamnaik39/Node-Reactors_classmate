@@ -86,24 +86,24 @@ export default class AssignmentPage extends Component {
                 let review = []
                 let completed = []
                 console.log(res.data);
-                // for (let i = 1; i < res.data.length; i++) {
-                //     // k.push(res.data[i])
-                //     console.log(res.data[i].statuse);
-                //     if (res.data[i].statuse == -1)
-                //         work.push(res.data[i])
-                //     else if (res.data[i].statuse == 0)
-                //         review.push(res.data[i])
-                //     else
-                //         completed.push(res.data[i])
-                // }
-                // console.log(work);
-                // console.log(review);
-                // console.log(completed);
-                // this.setState({
-                //     works: work,
-                //     reviews: review,
-                //     dones:completed
-                // })
+                for (let i = 0; i < res.data.length; i++) {
+                    // k.push(res.data[i])
+                    console.log(res.data[i].statuse);
+                    if (res.data[i].statuse == -1)
+                        work.push(res.data[i])
+                    else if (res.data[i].statuse == 0)
+                        review.push(res.data[i])
+                    else
+                        completed.push(res.data[i])
+                }
+                console.log(work);
+                console.log(review);
+                console.log(completed);
+                this.setState({
+                    works: work,
+                    reviews: review,
+                    dones:completed
+                })
             })
             .catch(err => {
                 console.log("There is an error here in retriving assignment data");
@@ -111,9 +111,9 @@ export default class AssignmentPage extends Component {
             });
     }
     render() {
-        // console.log(this.state.dones);
-        // console.log(this.state.reviews);
-        // console.log(this.state.works);
+        console.log(this.state.dones);
+        console.log(this.state.reviews);
+        console.log(this.state.works);
         console.log(this.props.id)
         return (
             <>

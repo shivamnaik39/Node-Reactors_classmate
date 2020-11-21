@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
         }
     }
 }))
-function Sidebar({history,match}) {
+function Sidebar({match}) {
     const classes = useStyles();
     console.log(match.params.id);
     const [opens, setOpens] = useState(0)

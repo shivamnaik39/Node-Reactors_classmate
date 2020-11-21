@@ -54,7 +54,7 @@ const AppRouter = () => (
 			<Route path="/subjects" component={SubjectPage} />
 			<Route path="/subject/:id" component={Sidebar} />
 			<Route path='/home' component={Home} exact={true} />
-			<Route path='/classwork' component={Sidebar} />
+			{/* <Route path='/classwork' component={Sidebar} /> */}
 			<Route path='/jobs' component={Jobs} exact={true} />
 			<Route path='/jobs/:id' component={JobDescription} exact={true} />
 			<Route path='/loans' component={Loans} exact={true} />

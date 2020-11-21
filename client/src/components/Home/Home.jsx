@@ -54,7 +54,7 @@ function Home({history}) {
                     {
                         name: "subjects",
                         photo: classwork,
-                        route:'/classwork'
+                        route:'/subjects'
                     },
                     {
                         name: "internships",
