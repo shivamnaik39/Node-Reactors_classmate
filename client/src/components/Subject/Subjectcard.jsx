@@ -57,16 +57,16 @@ const useStyles = makeStyles((theme) => ({
                             })
                     }
                 }, []);
-    useEffect(() => {
-        console.log(data);
-    }, [data])
+                useEffect(() => {
+                    console.log(data);
+                }, [data]);
                 return (
                     <>
                         <Grid container justify="space-around" alignItems="center">
                             {
                                 data.map((e, i) =>
                                     <Grid className={classes.subjectcard} style={{ background: "linear-gradient(to left,rgba(0,0,0,.1),rgba(0,0,0,.5)),url(" + bgarray[`${i%4}`] + ")" }} container item alignItems="center"  md={3} sm={4} >
-                                        <Link to={`/subject/${e.Sname}`}>
+                                        <Link to={`/subject/${e._id}`}>
                                         <Grid container item direction="column" className={classes.subjectname} >
                                             <Typography>
                                                 <b>
@@ -75,7 +75,6 @@ const useStyles = makeStyles((theme) => ({
                                             </Typography>
                                             <Typography>
                                                 <b>
-                                                    {e.faculty} Weeks
                                 </b>
                                             </Typography>
                                         </Grid>

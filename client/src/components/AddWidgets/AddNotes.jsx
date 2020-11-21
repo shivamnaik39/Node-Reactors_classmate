@@ -9,6 +9,7 @@ import { Field } from 'formik'
 import { TextField } from 'formik-material-ui'
 import React,{useState} from 'react'
 import axios from 'axios'
+import { id } from 'date-fns/locale'
 const useStyles = makeStyles((theme) =>
 	createStyles({
 		// root: {
@@ -89,8 +90,9 @@ const useStyles = makeStyles((theme) =>
 	})
 )
 
-const AddNotes = (props) => {
+const AddNotes = ({id}) => {
 	const classes = useStyles()
+	console.log(id);
     const [name,setname]=useState("")
     const [file, setfile] = useState("")
     const [img,setImage]=useState("")
@@ -99,17 +101,19 @@ const AddNotes = (props) => {
     }
     const submit=(e)=>{
         e.preventDefault()
-        const data=new FormData();
-        data.append("name",name)
-        data.append("file",file)
+		const data = new FormData();
+		data.set('encType','multipart/form-data')
+        data.append("title",name)
+		data.append("content", file)
+		data.append("subid",id)
         const multerimage=URL.createObjectURL(file)
         alert(multerimage)
-        // axios.post("http://localhost:5000/user/upload",data)
-        // .then(res=>{
-        //     console.log(res)
-        // }).catch(err=>{
-        //     console.log(err)
-        // })
+        axios.put("http://localhost:5000/classwork/addNotes/"+id,data)
+        .then(res=>{
+            console.log(res)
+        }).catch(err=>{
+            console.log(err)
+        })
     } 
 	
 	return (
@@ -122,7 +126,7 @@ const AddNotes = (props) => {
 						<input
 							className={classes.field}
 							component={TextField}
-							name='name'
+							name='title'
 							type='text'
 							placeholder='Notes Title'
 							InputProps={{
@@ -135,7 +139,7 @@ const AddNotes = (props) => {
 							}} 
 		/>
 						<br />
-						<input type="file" name="file" required
+						<input type="file" name="content" required
 						  accept="application/pdf" className={classes.fileinput} onChange={e => {
 											const file = e.target.files[0];
 											setfile(file)

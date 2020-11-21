@@ -118,7 +118,7 @@ const status = [
 // 	},
 // ]
 
-const AddClasswork = (props) => {
+const AddClasswork = ({id, history}) => {
 	const classes = useStyles()
 	const initialValues = {
 		aname: '',
@@ -127,16 +127,18 @@ const AddClasswork = (props) => {
 		// priority: 'medium',
 		dueDate: new Date(),
 		content: '',
+		subid:id,
 	}
-
 	const submit = (values, { setSubmitting }) => {
 		setTimeout(() => {
 			setSubmitting(false)
+			console.log(values);
 			let token = JSON.parse(localStorage.getItem("classmate"))
 			axios.put("http://localhost:5000/classwork/addAssign/" + token.userId, values)
 				.then(res => {
 					console.log("data successfully entered")
 					console.log(res);
+					history.push("/subject/"+id)
 				}).catch(err => {
 					console.log("There is an error in add an assignment");
 					console.log(err);

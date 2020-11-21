@@ -8,6 +8,7 @@ require("./db/mongoose");
 const app = express();
 app.use(cors())
 app.use(express.json());
+app.use('/Notes', express.static(path.join(__dirname + '/Notes')))
 app.use('/student',StudentRoute)
 app.use('/recruitor',RecruitorRoute)
 app.use('/classwork',ClassworkRoute)

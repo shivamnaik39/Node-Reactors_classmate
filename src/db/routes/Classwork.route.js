@@ -207,7 +207,7 @@ router.get('/GetNotes/:id',(req,res)=>{
                 }
             }
             if(Notes.length!=0){
-                return res.status(200).send({Notes})
+                return res.status(200).send(Notes)
             }
             else{
             return res.status(404).send('Not Found')

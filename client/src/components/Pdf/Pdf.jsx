@@ -2,11 +2,12 @@ import React from 'react'
  
 import PDFViewer from 'pdf-viewer-reactjs'
  
-const Pdf = () => {
+const Pdf = (data) => {
+    console.log(data.data);
     return (
         <PDFViewer
             document={{
-                url: 'https://arxiv.org/pdf/quant-ph/0410100.pdf',
+                url: data.data,
             }}
         />
     )

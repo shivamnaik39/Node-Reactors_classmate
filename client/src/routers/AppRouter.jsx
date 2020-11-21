@@ -15,6 +15,7 @@ import Home from '../components/Home/Home'
 import Sidebar from '../components/SubjectPage/Sidebar'
 import Jobs from '../components/Jobs/Jobs'
 import JobDescription from '../components/Jobs/JobDescription'
+import AddAssignment from '../components/Assignment/AddAssignment'
 
 const AppRouter = () => (
 	<Router>
@@ -44,7 +45,7 @@ const AppRouter = () => (
 				exact={true}
 			/>
 			<Route path='/student/addsub' component={AddSubject} exact={true} />
-			<Route path='/student/addassignment' component={AddClasswork} exact={true} />
+			<Route path='/student/addassignment/:id' component={AddAssignment} exact={true} />
 			<Route path='/testmodal' component={TestModal} exact={true} />
 			<Route path="/subjects" component={SubjectPage} />
 			<Route path="/subject/:id" component={Sidebar} />

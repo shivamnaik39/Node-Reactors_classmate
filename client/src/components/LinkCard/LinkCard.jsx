@@ -11,26 +11,31 @@ const useStyles = makeStyles((theme) => ({
         background:"rgba(0,0,0,0.1)",
         [theme.breakpoints.down("xs")]: {
             margin: "10px"
-        }
+        },
+    },
+    link: {
+        textDecoration:"none"
     },
     title: {
         fontSize: 14,
     },
 }));
 
-export default function NoteCard() {
+export default function NoteCard({data}) {
   const classes = useStyles();
 
     return (
         <>
-            <Card className={classes.root} variant="outlined" container item  justify="center" alignItem="center">
-                <CardContent>
-                    <Typography variant="h5" component="h2">
-                        <AttachmentIcon size="large"/> {"  "}
-                        Assignment Name
-                    </Typography>
-                </CardContent>
-            </Card>
+            <a href={"http://"+data.link} target="_blank" className={classes.link}>
+                <Card className={classes.root} variant="outlined" container item  justify="center" alignItem="center">
+                    <CardContent>
+                        <Typography variant="h5" component="h2">
+                            <AttachmentIcon size="large"/> {"  "}
+                            {data.title}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </a>
         </>
     );
 }

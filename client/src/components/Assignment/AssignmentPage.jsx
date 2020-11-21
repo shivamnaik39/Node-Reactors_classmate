@@ -2,6 +2,7 @@
 import AssignmentSection from './AssignmentSection'
 import { Grid } from "@material-ui/core"
 import axios from "axios"
+import {Link} from "react-router-dom"
 // function AssignmentPage({history}) {
 //     // console.log(working);
 //     // console.log(review);
@@ -21,15 +22,15 @@ import axios from "axios"
 //                 let review = []
 //                 let completed = []
 //                 console.log(res.data);
-//                 for (let i = 1; i < res.data.Assgn.length; i++) {
-//                     // k.push(res.data.Assgn[i])
-//                     console.log(res.data.Assgn[i].statuse);
-//                     if (res.data.Assgn[i].statuse == -1)
-//                         work.push(res.data.Assgn[i])
-//                     else if (res.data.Assgn[i].statuse == 0)
-//                         review.push(res.data.Assgn[i])
+//                 for (let i = 1; i < res.data.length; i++) {
+//                     // k.push(res.data[i])
+//                     console.log(res.data[i].statuse);
+//                     if (res.data[i].statuse == -1)
+//                         work.push(res.data[i])
+//                     else if (res.data[i].statuse == 0)
+//                         review.push(res.data[i])
 //                     else
-//                         completed.push(res.data.Assgn[i])
+//                         completed.push(res.data[i])
 //                 }
 //                 console.log(work);
 //                 console.log(review);
@@ -61,6 +62,8 @@ import axios from "axios"
 
 // export default AssignmentPage
 import React, { Component } from 'react'
+import AddAssignment from './AddAssignment'
+import AddIcon from '@material-ui/icons/Add';
 
 export default class AssignmentPage extends Component {
     constructor(props) {
@@ -77,21 +80,21 @@ export default class AssignmentPage extends Component {
             this.props.history.push("/login")
         let p = [];
         console.log(token.userId);
-        axios.get("http://localhost:5000/classwork/GetAssignment/" + token.userId)
+        axios.get("http://localhost:5000/classwork/GetAssignment/" + this.props.id)
             .then(res => {
                 let work = []
                 let review = []
                 let completed = []
                 console.log(res.data);
-                for (let i = 1; i < res.data.Assgn.length; i++) {
-                    // k.push(res.data.Assgn[i])
-                    console.log(res.data.Assgn[i].statuse);
-                    if (res.data.Assgn[i].statuse == -1)
-                        work.push(res.data.Assgn[i])
-                    else if (res.data.Assgn[i].statuse == 0)
-                        review.push(res.data.Assgn[i])
+                for (let i = 1; i < res.data.length; i++) {
+                    // k.push(res.data[i])
+                    console.log(res.data[i].statuse);
+                    if (res.data[i].statuse == -1)
+                        work.push(res.data[i])
+                    else if (res.data[i].statuse == 0)
+                        review.push(res.data[i])
                     else
-                        completed.push(res.data.Assgn[i])
+                        completed.push(res.data[i])
                 }
                 console.log(work);
                 console.log(review);
@@ -111,12 +114,24 @@ export default class AssignmentPage extends Component {
         console.log(this.state.dones);
         console.log(this.state.reviews);
         console.log(this.state.works);
+        console.log(this.props.id)
         return (
+            <>
         <Grid container item direction="row" justify="space-around">
             <AssignmentSection status="working" data={this.state.works} />
                 <AssignmentSection status="review" data={this.state.reviews}/>
                     <AssignmentSection status="done" data={this.state.dones}/>
-        </Grid>
+                </Grid>
+                <Link to={"/student/addassignment/" + this.props.id}>
+                    <AddIcon color="secondary" size="large" style={{
+                        position: "absolute",
+                        fontSize: "50px",
+                        bottom: "10px",
+                        right: "20px",
+                    }}/>
+                    {/* <AddAssignment data={this.props.id} /> */}
+                </Link>
+                </>
         )
     }
 }
