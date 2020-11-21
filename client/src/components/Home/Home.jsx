@@ -54,17 +54,20 @@ function Home({history}) {
                     {
                         name: "subjects",
                         photo: classwork,
+                        route:'/classwork'
                     },
                     {
                         name: "internships",
                         photo:internships,    
+                        route:'/jobs'
                     },
                     {
                         name: "finance",
                         photo: finance,
+                        route:'/loans'
                     }
                 ].map((e, i) => 
-                    <Link to={`/${e.name}`} key={i}>
+                    <Link to={e.route} key={i}>
                         <Grid container item sm={4} justify="center" alignItems="center" direction="column" >
                             <img src={e.photo} alt="jobs" className={classes.svgicon} />
                             <Typography className={classes.title}>{e.name}</Typography>

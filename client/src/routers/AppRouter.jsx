@@ -18,6 +18,8 @@ import JobDescription from '../components/Jobs/JobDescription'
 import AddAssignment from '../components/Assignment/AddAssignment'
 import Loans from '../components/Loans/Loans'
 import Analytics from '../components/Analytics/Analytics'
+import AddExpense from '../components/Expenses/AddExpense'
+import Expenses from '../components/Expenses/Expenses'
 
 const AppRouter = () => (
 	<Router>
@@ -57,6 +59,8 @@ const AppRouter = () => (
 			<Route path='/jobs/:id' component={JobDescription} exact={true} />
 			<Route path='/loans' component={Loans} exact={true} />
 			<Route path='/analytics' component={Analytics} exact={true} />
+			<Route path='/addexpense' component={AddExpense} exact={true} />
+			<Route path='/expenses' component={Expenses} exact={true} />
 
 			<Route component={PageNotFound} />
 		</Switch>

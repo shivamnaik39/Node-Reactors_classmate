@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Grid, Typography } from "@material-ui/core"
 import notes from "../../assets/homepagenotetaker.svg"
 import { makeStyles } from '@material-ui/core/styles';
+import {Link} from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     svgimage: {
@@ -59,12 +60,16 @@ function Landingpage() {
                     The new way to organize your study 
                 </Typography>
                 <Grid item sm={12} container justify="center" className={classes.btns} alignItems="center">
-                    <Button variant="contained" color="primary">
+                <Link to='/signup' style={{textDecoration:'none'}}>
+                <Button variant="contained" color="primary">
                         Join us
-                    </Button>
+                </Button>
+                    </Link>
+                    <Link to='/login' style={{textDecoration:'none'}}>
                     <Button variant="contained" color="primary">
                         Login
                     </Button>
+                    </Link>
                     
                 </Grid>
             </Grid>
