@@ -4,7 +4,6 @@ import {
 	Typography,
 	makeStyles,
 	createStyles,
-	Grid,
 	MenuItem,
 } from '@material-ui/core'
 import { Formik, Form, Field } from 'formik'
@@ -13,7 +12,6 @@ import { DatePicker } from 'formik-material-ui-pickers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import React from 'react'
-import { Link } from 'react-router-dom'
 import axios from 'axios'
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -118,7 +116,7 @@ const status = [
 // 	},
 // ]
 
-const AddClasswork = ({id, history}) => {
+const AddClasswork = ({id}) => {
 	const classes = useStyles()
 	const initialValues = {
 		aname: '',
@@ -133,8 +131,15 @@ const AddClasswork = ({id, history}) => {
 		setTimeout(() => {
 			setSubmitting(false)
 			console.log(values);
+			console.log(id);
 			let token = JSON.parse(localStorage.getItem("classmate"))
-			axios.put("http://localhost:5000/classwork/addAssign/" + token.userId, values)
+			axios.put("http://localhost:5000/classwork/addAssign/" + id, {
+				aname:values.aname,
+				grades: values.grades,
+				dueDate: values.dueDate,
+				content:values.content,
+				subid:id,
+			})
 				.then(res => {
 					console.log("data successfully entered")
 					console.log(res);
@@ -151,9 +156,7 @@ const AddClasswork = ({id, history}) => {
 		if (!values.aname) {
 			errors.aname = 'Required'
 		}
-		if (!values.grades) {
-			errors.grades = 'Required'
-		} else if (values.grades <= 0 || values.grades > 100) {
+		if (values.grades && (values.grades <= 0 || values.grades > 100)) {
 			errors.grades = 'Invalid Grades'
 		}
 		if (values.status === 'none') {

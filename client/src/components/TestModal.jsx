@@ -49,10 +49,10 @@ export default function TestModal() {
 			>
 				<Fade in={open}>
 					{/* <AddSubject/> */}
-					{/* <AddClasswork /> */}
+					<AddClasswork />
 					{/* <AddNotes /> */}
 					{/* <AddLink /> */}
-					<AddJob />
+					{/* <AddJob /> */}
 				</Fade>
 			</Modal>
 		</div>

@@ -114,7 +114,7 @@ export default class AssignmentPage extends Component {
         // console.log(this.state.dones);
         // console.log(this.state.reviews);
         // console.log(this.state.works);
-        // console.log(this.props.id)
+        console.log(this.props.id)
         return (
             <>
         <Grid container item direction="row" justify="space-around">
@@ -122,15 +122,7 @@ export default class AssignmentPage extends Component {
                 <AssignmentSection status="review" data={this.state.reviews}/>
                     <AssignmentSection status="done" data={this.state.dones}/>
                 </Grid>
-                <Link to={"/student/addassignment/" + this.props.id}>
-                    <AddIcon color="secondary" size="large" style={{
-                        position: "absolute",
-                        fontSize: "50px",
-                        bottom: "10px",
-                        right: "20px",
-                    }}/>
-                    {/* <AddAssignment data={this.props.id} /> */}
-                </Link>
+                    <AddAssignment data={this.props.id} />
                 </>
         )
     }

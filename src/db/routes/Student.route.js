@@ -222,7 +222,7 @@ router.post('/AddResume',upload.single('resume'),(req,res)=>{
     })
 })
 router.post('/ApplyJob',(req,res)=>{
-    User.findOne({email:req.body.useremail},(err,user)=>{
+    User.findOne({_id:req.body.id},(err,user)=>{
 
         if(err){
             console.log(err)

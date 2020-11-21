@@ -1,3 +1,4 @@
+import AddIcon from '@material-ui/icons/Add';
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Modal from '@material-ui/core/Modal'
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddAssignment({data}) {
     const classes = useStyles()
-	const [open, setOpen] = React.useState(true)
+	const [open, setOpen] = React.useState(false)
 
 	const handleOpen = () => {
 		setOpen(true)
@@ -27,9 +28,19 @@ export default function AddAssignment({data}) {
 	const handleClose = () => {
 		setOpen(false)
 	}
-
+    console.log(data);
 	return (
-		<div>
+        <div>
+            <button>
+
+                  <AddIcon color="secondary" size="large" onClick={handleOpen} style={{
+                position: "absolute",
+                fontSize: "50px",
+                bottom: "10px",
+                right: "20px",
+            }} />
+            </button>
+      
             <Modal
 				aria-labelledby='transition-modal-title'
 				aria-describedby='transition-modal-description'

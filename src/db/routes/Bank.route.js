@@ -1,7 +1,6 @@
 const router=require('express').Router();
 let User=require('../model/BankSt.model');
-const Razorpay=require('razorpay')
-const shortid=require('shortid')
+
 
 
 const nodemailer=require('nodemailer');
@@ -45,15 +44,16 @@ cron.schedule('2-4 58 0 1-31 * *', (req,res) => {
    
 });
 router.post('/add/:id',(req,res)=>{
-    const maxloan=req.body.maxloan
-    const amount=0
-    const intrestR=req.body.intrestR
-    const expenses=0
-    const requirments=req.body.requirments
-    const bankLink=req.body.bankLink
+    console.log(req.body)
+    const userid=req.params.id
+    const record ={
+        reasons:req.body.reason,
+        Amount:req.body.amount,
+        date:Date()
+    }
+    const totalexpenses=req.body.amount
     const useremail=req.body.useremail
-    
-    const newUser=new User({id,amount,intrestR,expenses,requirments,bankLink,useremail})
+    const newUser=new User({userid,totalexpenses,record,useremail})
     newUser.save()
             .then(result => {
                 res.status(201).json({
@@ -68,15 +68,20 @@ router.post('/add/:id',(req,res)=>{
         })
 })
 router.post('/addExpenses/:id',(req,res)=>{
-   User.updateOne({id:req.params.id})
-   .then(user =>{
-    user.amount=req.body.amount
-    user.expenses=user.expenses+amount
-    user.save()
-    .then(result => {
-        res.status(201).json({
-        message: "User registered successfully!"
+    User.findOneAndUpdate({userid:req.params.id},{$push:{"record":{
+        "reasons":req.body.reason,
+        "Amount":req.body.amount,
+        "date":Date()
+    }
+}
     })
+    .then(user => {
+        console.log(user)
+            res.status(201).json({
+                message: "User registered successfully!",
+            })
+        
+        
 })
 .catch(err => {
     console.log(err),
@@ -84,9 +89,40 @@ router.post('/addExpenses/:id',(req,res)=>{
             error: err
         });
 })
-
-   })
     
 })
+router.get('/calculateExpense/:id',(req,res)=>{
+    User.findOneAndUpdate({userid:req.params.id})
+    .then(user =>{
+        if(user==undefined){
+            res.status(404).send('No such user')
+        }
+        else{
+            console.log(user)
+            console.log(user.record)
+            for(let i=0;i<user.record.length;i++){
+                user.totalexpenses=user.totalexpenses+user.record[i].Amount
+            }
+            console.log(user)
+            user.save()
+            .then(result=>{
+                return res.status(200).send(result)
+            })
+            .catch(err => {
+                res.status(500).send(err)
+            })
+            
+        }
 
+    })
+    .catch(err =>{
+        console.log(err)
+        res.status(500).send(err)
+    })
+})
+router.get('/getExpenses/:id',(req,res)=>{
+    User.find({userid:req.params.id})
+    .then(user =>res.status(200).send({user}))
+    .catch(err =>res.status(500).send(err))
+})
 module.exports =router;

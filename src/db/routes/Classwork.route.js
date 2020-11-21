@@ -150,18 +150,20 @@ router.put('/addAssign/:id',(req,res)=>{
         "subid":req.body.subid,
         "Aname":req.body.aname,
         "dueDate":Date(req.body.dueDate),
-        "statuse":req.body.status,
+        "statuse":-1,
         "content":req.body.content,
         "grades":0
     }
 }
 })
-.then(result=>{
+        .then(result => {
+    console.log("inthen")
     console.log(result)
     res.status(200).send('Assignment Added successfully')
 })
 .catch(err =>{
     console.log(err)
+    console.log("inerror")
     res.status(500).send(err)
 })
 })
