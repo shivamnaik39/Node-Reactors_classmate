@@ -1,5 +1,6 @@
 const router=require('express').Router();
 let User=require('../model/Classwork.model');
+let Student=require('../model/Student.model');
 let multer=require('multer'),
     uuidv4=require('uuidv4')
     
@@ -38,24 +39,41 @@ let cron = require('node-cron');
 
 
 cron.schedule('2-4 58 0 1-31 * *', (req,res) => {
-
-   console.log('running a task every minute');
-   transporter.sendMail({
-    to:'shivamnaik8239@gmail.com',
-    from:"savishkargec@gmail.com",
-    subject:"Automatic Mail",
-    html:`
-    <p>Hi ,if you are recieing this message it is to tell you that this is an automated message and we have been successful in achieving it</p>
-    <h5>hhhhuuuurrrraaaaayyyyyyyy!!!!!, so pls tell me what is to be added in this mail and finance what are we doing?</h5>
-    `
-},(err,result)=>{
-    if(err){
-        console.log(err)
-    }
-    else{
-    }
-    transporter.close()
-})
+    User.find()
+    .then(user =>{
+        for(let i=0;i<user.length;i++){
+            for(let j=0;i<user[i].assign.length;j++){
+                console.log(user[i].assign[j].dueDate-new Date())
+                let difftime=new Date().getTime()-user[i].assign[i].dueDate.getTime();
+                let diifday=difftime/(1000 * 3600 * 24);
+                if(diifday<2){
+                    Student.findById(user[i].studentid)
+                    .then(student=>{
+                        console.log('running a task every minute');
+                        transporter.sendMail({
+                        to:student.email,
+                        from:"savishkargec@gmail.com",
+                        subject:"Assignment Due",
+                        html:`
+                        <p>Hi ${student.name}<br /> looks like you haven't completed ${user[i].assign[j]} assignment yet!</p>
+                        <h5>lets fnish it off shall we<br /> if you have already completed the assignment do let us know</h5>
+                        <h1>Have A Wonderful Day<br /><small>from classmates</small></h1>
+                        `
+                  },(err,result)=>{
+                    if(err){
+                        console.log(err)
+                    }
+                    else{
+                    }
+                    transporter.close()
+                })
+                    })
+                    
+                }
+            }
+        }
+    })
+   
 });
 
 
@@ -81,7 +99,8 @@ cron.schedule('2-4 58 0 1-31 * *', (req,res) => {
 
 
 //Works fine
-router.post('/addStudent/:id',(req,res)=>{
+router.post('/addStudent/:id', (req, res) => {
+    console.log("called")
     const studentid=req.params.id
     const syllabus=' '
     const subject=[{
@@ -90,7 +109,7 @@ router.post('/addStudent/:id',(req,res)=>{
         faculty:' ',
         notes:[{link:' ',title:' '}],
         extnotes:[{link:' ',title:' '}],
-
+        assid:[{ids:' '}]
     }]
     const assign=[{
         subid:' ',
@@ -148,21 +167,21 @@ router.put('/addAssign/:id',(req,res)=>{
     User.findOneAndUpdate({studentid:req.params.id},{$push:{"assign":{
         "subid":req.body.subid,
         "Aname":req.body.aname,
-        "dueDate":Date(req.body.date),
+        "dueDate":Date(req.body.dueDate),
         "statuse":-1,
-        "content":' ',
+        "content":req.body.content,
         "grades":0
     }
 }
-    
-
 })
-.then(result=>{
+        .then(result => {
+    console.log("inthen")
     console.log(result)
     res.status(200).send('Assignment Added successfully')
 })
 .catch(err =>{
     console.log(err)
+    console.log("inerror")
     res.status(500).send(err)
 })
 })
@@ -196,10 +215,11 @@ router.get('/GetAssignment/:id',(req,res)=>{
         if(err){
             res.status(500).send(err)
         }
-        if(user[0].assign==null){
-            res.status(404).send('Not Found')
+        if(user[0]==null){
+            res.status(200).send('No assignment')
         }
         else{
+            console.log(user)
             const Stud=user[0]
             console.log(Stud.assign[1])
             for(let i=1;i<Stud.assign.length;i++){
@@ -239,7 +259,7 @@ router.get('/GetNotes/:id',(req,res)=>{
                 }
             }
             if(Notes.length!=0){
-                return res.status(200).send({Notes})
+                return res.status(200).send(Notes)
             }
             else{
             return res.status(404).send('Not Found')

@@ -30,7 +30,7 @@ const transporter=nodemailer.createTransport({
     service:'Gmail' ,
     auth:{
         user:'savishkargec@gmail.com',
-        pass:'for@*web'
+        pass:'Batman7Forever*123'
    }
 })
 
@@ -59,7 +59,7 @@ router.route('/add').post((req,res)=>{
             const resume=' '
             const resetToken=' '
             const expiresToken=' '
-            const newUser=new User({firstname,lastname,email,password,resetToken,expiresToken})
+            const newUser=new User({firstname,lastname,email,password,resume,resetToken,expiresToken})
             bcrypt.hash(newUser.password,saltRound,(err,hash)=>{
                 if (err) throw err;
                 newUser.password=hash;
@@ -207,6 +207,14 @@ router.post('/new-password',(req,res)=>{
 
 
 
+})
+router.get("/user/:id", (req, res) => {
+    User.findById(req.params.id)
+        .then(user => {
+            res.send(user)
+        }).catch(err => {
+        res.status(404).send("user not found")
+    })
 })
 router.post('/AddResume',upload.single('resume'),(req,res)=>{
     const url=req.protocol+'://'+req.get('host')
