@@ -5,7 +5,7 @@ import finance from "../../assets/money.svg"
 import internships from "../../assets/jobs.svg"
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from "react-router-dom"
-
+import axios from "axios"
 const useStyles = makeStyles((theme) => ({
     svgicon: {
         width: "180px",
@@ -44,15 +44,17 @@ function Home({history}) {
         let token = JSON.parse(localStorage.getItem("classmate"))
         if (!token) 
             history.push("/login")
+        console.log(token.userId);
+       
     }, [])
     return (
             <Grid container item  justify="space-around" alignItems="center" className={classes.selectionicons}>
             {
                 [
                     {
-                        name: "classwork",
+                        name: "subjects",
                         photo: classwork,
-                        route:'/classwork'
+                        route:'/subjects'
                     },
                     {
                         name: "internships",

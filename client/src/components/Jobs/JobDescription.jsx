@@ -11,7 +11,7 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import jobs from './jobData'
 import { useParams } from 'react-router-dom'
-
+import axios from "axios"
 const useStyles = makeStyles((theme) =>
 	createStyles({
 		root: {
@@ -80,23 +80,39 @@ const useStyles = makeStyles((theme) =>
 	})
 )
 
-const JobDescription = (props) => {
+const JobDescription = ({history}) => {
 	const classes = useStyles()
 	let { id } = useParams()
 	id = parseInt(id)
 	const job = jobs.filter((j) => j.id === id)[0]
-
+	const submitresume = () => {
+        let token = JSON.parse(localStorage.getItem("classmate"))
+        if (!token) 
+            history.push("/login")
+        console.log(token.userId);
+		axios.post("http://localhost:5000/student/ApplyJob/",{
+			empemail: job.email,
+			userId: token.userId
+		}).then(res => {
+			console.log("sucessfully applied for job");
+			console.log(res);
+		}).catch(err => {
+			console.log("there is an error here in applying for job");
+			console.log(err);
+		});
+	}
 	return (
+		<>
 		<Grid
 			container
 			className={classes.root}
-			justif='center'
+			justify='center'
 			alignItems='center'
 		>
 			{/* Company Logo */}
 			<Grid item xs={12} md={4} className={classes.img}>
 				<LinkedInIcon className={classes.companyIcon} />
-				<Button variant='contained' color='primary'>
+				<Button variant='contained' color='primary' onClick={submitresume}>
 					Apply
 				</Button>
 			</Grid>
@@ -159,8 +175,9 @@ const JobDescription = (props) => {
 					</Typography>
 				</div>
 			</Grid>
-		</Grid>
-	)
+			</Grid>
+	</>		
+	);
 }
 
 export default JobDescription

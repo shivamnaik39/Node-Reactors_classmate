@@ -85,15 +85,27 @@ function validURL(str) {
 	return !!pattern.test(str)
 }
 
-const AddLink = (props) => {
+const AddLink = ({id,history}) => {
 	const classes = useStyles()
-	const initialValues = { title: '', link: null }
+	const initialValues = { title: '', link: null,subid:id }
 
 	const submit = (values, { setSubmitting }) => {
 		setTimeout(() => {
 			setSubmitting(false)
-			alert(JSON.stringify(values, null, 2))
-		}, 500)
+			axios.put("http://localhost:5000/classwork/addLink/" + id, {
+				title: values.title,
+				link: values.link,
+				subid: id
+			})
+				.then(res => {
+					console.log("data successfully entered")
+					console.log(res);
+					history.push("/subject/" + id)
+				}).catch(err => {
+					console.log("There is an error in add a link");
+					console.log(err);
+				});
+		}, 500);
 	}
 
 	const validate = (values) => {

@@ -75,6 +75,11 @@ const useStyles = makeStyles((theme) =>
 			fontWeight: 'bold',
 			fontSize: '1rem',
 		},
+		selectbox: {
+			[theme.breakpoints.down("xs")]: {
+				minWidth: "180px",
+			}
+		}
 	})
 )
 
@@ -84,15 +89,15 @@ const status = [
 		label: 'None',
 	},
 	{
-		value: 'working',
+		value: '-1',
 		label: 'Working',
 	},
 	{
-		value: 'under review',
+		value: '0',
 		label: 'Under Review',
 	},
 	{
-		value: 'complete',
+		value: '1',
 		label: 'Complete',
 	},
 ]
@@ -111,28 +116,45 @@ const status = [
 // 	},
 // ]
 
-const AddClasswork = (props) => {
+const AddClasswork = ({id}) => {
 	const classes = useStyles()
 	const initialValues = {
-		name: '',
+		aname: '',
 		grades: null,
 		status: 'none',
 		// priority: 'medium',
 		dueDate: new Date(),
-		description: '',
+		content: '',
+		subid:id,
 	}
-
 	const submit = (values, { setSubmitting }) => {
 		setTimeout(() => {
 			setSubmitting(false)
-			alert(JSON.stringify(values, null, 2))
+			console.log(values);
+			console.log(id);
+			let token = JSON.parse(localStorage.getItem("classmate"))
+			axios.put("http://localhost:5000/classwork/addAssign/" + token.userId, {
+				aname:values.aname,
+				grades: values.grades,
+				dueDate: values.dueDate,
+				content:values.content,
+				subid:id,
+			})
+				.then(res => {
+					console.log("data successfully entered")
+					console.log(res);
+					// history.push("/subject/"+id)
+				}).catch(err => {
+					console.log("There is an error in add an assignment");
+					console.log(err);
+				});
 		}, 500)
 	}
 
 	const validate = (values) => {
 		const errors = {}
-		if (!values.name) {
-			errors.name = 'Required'
+		if (!values.aname) {
+			errors.aname = 'Required'
 		}
 		if (values.grades && (values.grades <= 0 || values.grades > 100)) {
 			errors.grades = 'Invalid Grades'
@@ -154,7 +176,7 @@ const AddClasswork = (props) => {
 							<Field
 								className={classes.field}
 								component={TextField}
-								name='name'
+								name='aname'
 								type='text'
 								label='Classwork Name'
 								InputProps={{
@@ -174,6 +196,7 @@ const AddClasswork = (props) => {
 							/>
 							<br />
 							<Field
+								className={classes.selectbox}
 								component={TextField}
 								type='text'
 								name='status'
@@ -231,7 +254,7 @@ const AddClasswork = (props) => {
 							<Field
 								className={classes.field}
 								component={TextField}
-								name='description'
+								name='content'
 								type='text'
 								label='Description'
 								multiline

@@ -41,7 +41,7 @@ router.route('/').get((req,res)=>{
     .catch(err=>res.status(400).json('Error:'+err))
 })
 router.route('/add').post((req,res)=>{
-    console.log(req.body.email)
+    
     User.findOne({email:req.body.email},(err,user)=>{
         if(err){
             console.log(err)
@@ -70,7 +70,7 @@ router.route('/add').post((req,res)=>{
                     else{
                         let payload={subject:user.email}
                         let token=jwt.sign(payload,process.env.SECRET_KEY)
-                        res.status(200).send({token})
+                        res.status(200).send({token,user})
                     }
                 }) 
             })
@@ -91,9 +91,16 @@ router.route('/add').post((req,res)=>{
     })
     
 })
-router.post('/login', (req, res) => {
-    console.log(req.body.email)
-    console.log(req.body.password)
+router.get("/user/:id", (req, res) => {
+    User.findById(req.params.id)
+        .then(user => {
+            res.send(user)
+        }).catch(err => {
+        res.status(404).send("user not found")
+    })
+})
+router.post('/login',(req,res)=>{
+
     User.findOne({email:req.body.email},(err,user)=>{
          
         if(err){
@@ -109,8 +116,6 @@ router.post('/login', (req, res) => {
                             let token=jwt.sign(payload,process.env.SECRET_KEY)
             
                             res.status(200).send({user,token})
-                        
-                        
                     }
                     else{
                         res.status(401).send('invalid Password')
@@ -204,9 +209,6 @@ router.post('/new-password',(req,res)=>{
     .catch(err=>{
         console.log(err)
         res.status(400).json('oopsy doopsy sorry'+err)})
-
-
-
 })
 router.get("/user/:id", (req, res) => {
     User.findById(req.params.id)
@@ -219,7 +221,7 @@ router.get("/user/:id", (req, res) => {
 router.post('/AddResume',upload.single('resume'),(req,res)=>{
     const url=req.protocol+'://'+req.get('host')
 
-    User.findOneAndUpdate({email:req.body.email})
+    User.findOneAndUpdate({_id:req.body.id})
     .then(user=>{
         user.resume=url+'/Notes/'+req.file.filename 
         user.save()

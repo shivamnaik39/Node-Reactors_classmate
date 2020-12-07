@@ -30,18 +30,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function AssignmentCard({status}) {
+function AssignmentCard({ status, element }) {
   const classes = useStyles();
-
+  // console.log(element);
     return (
       <>
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <Typography variant="h5" component="h2">
-            Assignment Name
+            {element.Aname}
         </Typography>
         <Typography variant="body2" component="p">
-         Lorem ipsum dolor sit amet.
+         {element.content}
                   <br />
         </Typography>
       </CardContent>
@@ -88,3 +88,4 @@ export default function AssignmentCard({status}) {
             </>
   );
 }
+export default AssignmentCard

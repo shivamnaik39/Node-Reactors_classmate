@@ -1,15 +1,15 @@
 import {
 	Button,
-	LinearProgress,
 	Typography,
 	makeStyles,
 	createStyles,
+	Grid
 } from '@material-ui/core'
-import { Formik, Form, Field } from 'formik'
+import { Field } from 'formik'
 import { TextField } from 'formik-material-ui'
-import React,{useEffect} from 'react'
-import { Link } from 'react-router-dom'
+import React,{useState} from 'react'
 import axios from 'axios'
+import { id } from 'date-fns/locale'
 const useStyles = makeStyles((theme) =>
 	createStyles({
 		// root: {
@@ -71,80 +71,70 @@ const useStyles = makeStyles((theme) =>
 			fontWeight: 'bold',
 			fontSize: '1rem',
 		},
+		fileinput: {
+			paddingBottom:"5px",
+			marginTop:"20px",
+			borderBottom: "1px solid rgba(0,0,0,0.5)",
+		},
+		forminput: {
+			border: "none",
+			outline: "null",
+			borderBottom: "1px solid rgba(0,0,0,0.5)",
+			background: "#e0e0e0",
+			width: "250px",
+			
+		},
+		formpart: {
+			minHeight:"100vh"
+		},
 	})
 )
 
-const AddSubject = ({history}) => {
+const AddResume = ({id,history}) => {
 	const classes = useStyles()
-	const initialValues = { sname: '', faculty: null }
-	useEffect(() => {
+	console.log(id);
+    const [name,setname]=useState("")
+    const [file, setfile] = useState("")
+    const [img,setImage]=useState("")
+    const uploadpic=(e)=>{
+        setfile(e.target.value)
+    }
+    const submit=(e)=>{
+        e.preventDefault()
         let token = JSON.parse(localStorage.getItem("classmate"))
         if (!token) 
             history.push("/login")
         console.log(token.userId);
-	}, [])
-	const submit = (values, { setSubmitting }) => {
-		setTimeout(() => {
-			setSubmitting(false)
-			console.log(values)
-			let token = JSON.parse(localStorage.getItem("classmate"))
-			alert(token.userId)
-			axios.put("http://localhost:5000/classwork/addSubject/" + token.userId, values)
-				.then(res => {
-					console.log("Successfully added a subject");
-					console.log(res);
-					history.push("/subjects")
-				}).catch(err => {
-					console.log("There is an error here in adding the subject");
-					console.log(err);
-			})
-		}, 500)
-	}
-
-	const validate = (values) => {
-		const errors = {}
-		if (!values.sname) {
-			errors.sname = 'Required'
-		}
-		if (!values.faculty) {
-			errors.faculty = 'Required'
-		} else if (values.faculty <= 0) {
-			errors.faculty = 'Invalid Duration'
-		}
-		return errors
-	}
+		const data = new FormData();
+		data.set('encType','multipart/form-data')
+		data.append("resume", file)
+		data.append("id",token.userId)
+        const multerimage=URL.createObjectURL(file)
+        alert(multerimage)
+        axios.post("http://localhost:5000/student/AddResume",data)
+        .then(res=>{
+            console.log(res)
+        }).catch(err=>{
+            console.log(err)
+        })
+    } 
+	
 	return (
-		<Formik initialValues={initialValues} validate={validate} onSubmit={submit}>
-			{({ submitForm, isSubmitting }) => (
-				<Form className={classes.form} autoComplete='off'>
+		<Grid container justify="center" alignitems="center" className={classes.formpart}>
+		<form className={classes.form} autoComplete='off' encType="multipart/form-data" onSubmit={submit}>
 					<Typography variant='h5' component='h2' className={classes.title}>
-						Add Subject
+						Add Resume
 					</Typography>
 					<div className={classes.fields}>
-						<Field
-							className={classes.field}
-							component={TextField}
-							name='sname'
-							type='text'
-							label='Subject Name'
-							InputProps={{
-								className: classes.fieldInput,
-							}}
-						/>
-						<br />
-						<Field
-							className={classes.field}
-							component={TextField}
-							name='faculty'
-							type='number'
-							label='Subject Duration (Weeks)'
-							InputProps={{
-								className: classes.fieldInput,
-							}}
-						/>
+						<input type="file" name="content" required
+						  accept="application/pdf" className={classes.fileinput} onChange={e => {
+											const file = e.target.files[0];
+											setfile(file)
+									}}
+						 />
+						
 						<br />
 
-						{isSubmitting && <LinearProgress />}
 					</div>
 
 					{/* Log In Action */}
@@ -152,8 +142,7 @@ const AddSubject = ({history}) => {
 						<Button
 							className={classes.loginButton}
 							variant='contained'
-							disabled={isSubmitting}
-							onClick={submitForm}
+							type="submit"
 							color='primary'
 						>
 							Add
@@ -161,10 +150,9 @@ const AddSubject = ({history}) => {
 					</div>
 					<br />
 					<br />
-				</Form>
-			)}
-		</Formik>
+			</form>
+			</Grid>
 	)
 }
 
-export default AddSubject
+export default AddResume

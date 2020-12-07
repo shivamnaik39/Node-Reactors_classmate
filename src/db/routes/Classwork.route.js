@@ -164,6 +164,7 @@ router.post('/addSyllabus/:id',upload.single('syllabus'),(req,res)=>{
 //Works Fine requires subject id Ass Name and Date 
 router.put('/addAssign/:id',(req,res)=>{
     console.log(req.body)
+    console.log("the id is"+req.params.id)
     User.findOneAndUpdate({studentid:req.params.id},{$push:{"assign":{
         "subid":req.body.subid,
         "Aname":req.body.aname,

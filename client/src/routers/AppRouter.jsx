@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import LandingPage from '../components/Landingpage/Landingpage'
+import LandingPage from '../components/LandingPage/Landingpage'
 import LoginPage from '../components/LogIn/LoginPage'
 import Form from '../components/LogIn/MyForm'
 import PageNotFound from '../components/PageNotFound'
@@ -9,10 +9,13 @@ import StudentSignup from '../components/signUp/StudentSignup'
 import CompanySignup from '../components/signUp/CompanySignup'
 import AddSubject from '../components/AddWidgets/AddSubject'
 import TestModal from '../components/TestModal'
+import SubjectPage from "../components/Subject/Subjectcard"
+import AddClasswork from '../components/AddWidgets/AddClasswork'
 import Home from '../components/Home/Home'
 import Sidebar from '../components/SubjectPage/Sidebar'
 import Jobs from '../components/Jobs/Jobs'
 import JobDescription from '../components/Jobs/JobDescription'
+import AddAssignment from '../components/Assignment/AddAssignment'
 import Loans from '../components/Loans/Loans'
 import Analytics from '../components/Analytics/Analytics'
 import AddExpense from '../components/Expenses/AddExpense'
@@ -46,9 +49,12 @@ const AppRouter = () => (
 				exact={true}
 			/>
 			<Route path='/student/addsub' component={AddSubject} exact={true} />
+			<Route path='/student/addassignment/:id' component={AddAssignment} exact={true} />
 			<Route path='/testmodal' component={TestModal} exact={true} />
+			<Route path="/subjects" component={SubjectPage} />
+			<Route path="/subject/:id" component={Sidebar} />
 			<Route path='/home' component={Home} exact={true} />
-			<Route path='/classwork' component={Sidebar} />
+			{/* <Route path='/classwork' component={Sidebar} /> */}
 			<Route path='/jobs' component={Jobs} exact={true} />
 			<Route path='/jobs/:id' component={JobDescription} exact={true} />
 			<Route path='/loans' component={Loans} exact={true} />

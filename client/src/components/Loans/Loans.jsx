@@ -1,7 +1,14 @@
-import { createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
+import {
+	Button,
+	createStyles,
+	Grid,
+	makeStyles,
+	Typography,
+} from '@material-ui/core'
 import React from 'react'
 import Loan from './Loan'
 import loans from './loanData'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) =>
 	createStyles({
@@ -12,6 +19,9 @@ const useStyles = makeStyles((theme) =>
 			padding: '1rem',
 			marginBottom: '0',
 		},
+		btn: {
+			marginLeft: '1rem',
+		},
 	})
 )
 
@@ -21,6 +31,16 @@ const Loans = (props) => {
 		<Grid container>
 			<Typography variant='h3' component='h1' className={classes.heading}>
 				Education Loans
+				<Link to='/expenses' style={{ textDecoration: 'none' }}>
+					<Button variant='contained' color='primary' className={classes.btn}>
+						Expenses
+					</Button>
+				</Link>
+				<Link to='/addexpense' style={{ textDecoration: 'none' }}>
+					<Button variant='contained' color='primary' className={classes.btn}>
+						Add Expense
+					</Button>
+				</Link>
 			</Typography>
 			<Grid container spacing={3} className={classes.root}>
 				{loans.map((loan) => {
